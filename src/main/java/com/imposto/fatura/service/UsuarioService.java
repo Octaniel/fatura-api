@@ -55,11 +55,11 @@ public class UsuarioService {
         usuario.setIsFirst(true);
         Usuario save = usuarioRepository.save(usuario);
         publisher.publishEvent(new RecursoCriadoEvent(this,httpServletResponse,save.getId()));
-        String s = enviarEmail(usuario.getEmail(), senhaTemporaria);
-        System.out.println(s);
+        //String s = enviarEmail(usuario.getEmail(), senhaTemporaria);
         return ResponseEntity.status(HttpStatus.CREATED).body(save);
     }
         private void validar(Usuario usuario, Integer id){
+            if(!usuario.getSenha().equals(usuario.getConfirmacaoSenha())) throw new UsuarioException("A Senha e a confirmação de senha são diferentes");
             List<Usuario> all = usuarioRepository.findAll();
             all.forEach(x->{
                 if(usuario.getNome().equals(x.getNome())&&!x.getId().equals(id)) throw new UsuarioException("Este nome já esta sendo utilizado por outro utilizador");
@@ -89,7 +89,6 @@ public class UsuarioService {
         Random random1 = new Random();
         String s = random.nextString();
         String senha = (random1.nextInt(9)+1)+""+s.charAt(1)+""+(random1.nextInt(9)+1)+""+s.charAt(3);
-        System.out.println(senha);
         return senha;
     }
 

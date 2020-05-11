@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -33,10 +34,10 @@ public class EmpresaResource {
         this.empresaService = empresaService;
     }
 
-    /*@GetMapping
+    @GetMapping("listar")
     public List<Empresa> listar(){
         return empresaRepository.findAll();
-    }*/
+    }
 
     @GetMapping
     public Page<EmpresaResumo> listarTabela(EmpresaFilter empresaFilter, Pageable pageable){

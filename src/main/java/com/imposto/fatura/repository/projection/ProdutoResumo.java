@@ -18,8 +18,10 @@ public class ProdutoResumo {
     private String codigo;
     private String descTaxa;
     private Integer valorTaxa;
+    private Double valorInalteravel;
+    private Boolean emPromocao;
 
-    public ProdutoResumo(Integer id, String nome, String modelo, String descricaoTipoProduto, Double precoVenda, Boolean status, String unidade, Integer quantidade, String marca, String codigo, String descTaxa, Integer valorTaxa) {
+    public ProdutoResumo(Integer id, String nome, String modelo, String descricaoTipoProduto, Double precoVenda, Boolean status, String unidade, Integer quantidade, String marca, String codigo, String descTaxa, Integer valorTaxa, Double valorInalteravel, Boolean emPromocao) {
         this.id = id;
         this.nome = nome;
         this.modelo = modelo;
@@ -32,6 +34,8 @@ public class ProdutoResumo {
         this.codigo = codigo;
         this.descTaxa = descTaxa;
         this.valorTaxa = valorTaxa;
+        this.valorInalteravel = valorInalteravel;
+        this.emPromocao = emPromocao;
     }
 
     public ProdutoResumo() {

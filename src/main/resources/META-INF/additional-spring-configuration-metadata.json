@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "fatura.seguranca.enable-https",
+      "type": "java.lang.String",
+      "description": "Description for fatura.seguranca.enable-https."
+  }
+] }

@@ -32,6 +32,15 @@ public class Promocao {
     @Column(name = "valor_promocao")
     private Double valor;
 
+    @NotNull(message = "Status é obrigatorio")
+    @Column(name = "status")
+    private Boolean status;
+
+    @OneToOne
+    @NotNull(message = "Produto é obrigatorio")
+    @JoinColumn(name = "produto_id")
+    private Produto produto;
+
     @Column(name = "dt_cria")
     private LocalDateTime dataCriacao;
 

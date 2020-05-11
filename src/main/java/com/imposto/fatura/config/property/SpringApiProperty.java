@@ -3,7 +3,7 @@ package com.imposto.fatura.config.property;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("fatura")
 public class SpringApiProperty {
-    private Seguranca seguranca=new Seguranca();
+    private Seguranca seguranca;
     private String originPermitida;
 
     public String getOriginPermitida() {
@@ -16,6 +16,10 @@ public class SpringApiProperty {
 
     public Seguranca getSeguranca() {
         return seguranca;
+    }
+
+    public void setSeguranca(Seguranca seguranca) {
+        this.seguranca = seguranca;
     }
 
     public static class Seguranca{

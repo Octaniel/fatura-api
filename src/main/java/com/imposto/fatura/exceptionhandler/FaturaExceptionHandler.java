@@ -37,7 +37,7 @@ public class FaturaExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
-        String mensagemUsuario=messageSource.getMessage("mensagem.invalida",null, LocaleContextHolder.getLocale());
+        String mensagemUsuario=messageSource.getMessage("menssagem.invalida",null, LocaleContextHolder.getLocale());
         String mensagemDoDesenvolvedor=ex.getCause()==null?ex.toString():ex.getCause().toString();
         return handleExceptionInternal(ex, new Erro(mensagemUsuario, mensagemDoDesenvolvedor),headers,HttpStatus.BAD_REQUEST,request);
     }

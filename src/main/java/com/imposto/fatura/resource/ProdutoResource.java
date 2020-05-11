@@ -81,9 +81,4 @@ public class ProdutoResource {
         one.setStatus(false);
         produtoRepository.save(one);
     }
-
-    @PutMapping("/promocao/{idProduto}")
-    public ResponseEntity<Promocao> porEmPromomocao(@RequestBody @Valid Promocao promocao, @PathVariable Integer idProduto, HttpServletResponse httpServletResponse){
-        return promocaoService.salvar(promocao,idProduto,httpServletResponse);
-    }
 }

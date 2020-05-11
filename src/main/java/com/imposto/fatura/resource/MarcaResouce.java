@@ -18,9 +18,9 @@ import java.util.List;
 @RequestMapping("marca")
 public class MarcaResouce {
 
-    private MarcaRepositoryCustom marcaRepositoryCustom;
-    private MarcaService marcaService;
-    private MarcaRepository marcaRepository;
+    private final MarcaRepositoryCustom marcaRepositoryCustom;
+    private final MarcaService marcaService;
+    private final MarcaRepository marcaRepository;
 
     public MarcaResouce(MarcaRepositoryCustom marcaRepositoryCustom, MarcaService marcaService, MarcaRepository marcaRepository) {
         this.marcaRepositoryCustom = marcaRepositoryCustom;
@@ -49,7 +49,7 @@ public class MarcaResouce {
     }
 
     @GetMapping("/{id}")
-    public Marca atualizar(@PathVariable Integer id){
+    public Marca listarPorId(@PathVariable Integer id){
         return marcaRepository.findById(id).orElse(null);
     }
 }

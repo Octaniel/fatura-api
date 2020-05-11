@@ -19,9 +19,9 @@ import java.util.List;
 public class TipoProdutoResource {
 
 
-    private TipoProdutoRepositoryCustom tipoProdutoRepositoryCustom;
-    private TipoProdutoService tipoProdutoService;
-    private TipoProdutoRepository tipoProdutoRepository;
+    private final TipoProdutoRepositoryCustom tipoProdutoRepositoryCustom;
+    private final TipoProdutoService tipoProdutoService;
+    private final TipoProdutoRepository tipoProdutoRepository;
 
     public TipoProdutoResource(TipoProdutoRepositoryCustom tipoProdutoRepositoryCustom, TipoProdutoService tipoProdutoService, TipoProdutoRepository tipoProdutoRepository) {
         this.tipoProdutoRepositoryCustom = tipoProdutoRepositoryCustom;

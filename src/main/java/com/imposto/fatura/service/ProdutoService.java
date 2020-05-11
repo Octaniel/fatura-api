@@ -46,6 +46,7 @@ public class ProdutoService {
     }
 
     private void validarCliente(Produto produto, Integer id) {
+        produto.setValorInalteravel(produto.getPrecoVenda());
         List<Produto> lista = produtoRepository.findAll();
         lista.forEach(x ->{
             Optional<Usuario> byId = usuarioRepository.findById(produto.getUsuarioCriouId());

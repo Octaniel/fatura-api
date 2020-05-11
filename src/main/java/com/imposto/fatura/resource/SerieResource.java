@@ -20,13 +20,13 @@ import java.util.List;
 @RequestMapping("serie")
 public class SerieResource {
 
-    private SerieRepository serieRepository;
+    private final SerieRepository serieRepository;
 
-    private SerieRepositoryCustom serieRepositoryCustom;
+    private final SerieRepositoryCustom serieRepositoryCustom;
 
-    private SerieService serieService;
+    private final SerieService serieService;
 
-    private TipoDocumentoRepository tipoDocumentoRepository;
+    private final TipoDocumentoRepository tipoDocumentoRepository;
 
     public SerieResource(SerieRepository serieRepository, SerieRepositoryCustom serieRepositoryCustom, SerieService serieService, TipoDocumentoRepository tipoDocumentoRepository) {
         this.serieRepository = serieRepository;

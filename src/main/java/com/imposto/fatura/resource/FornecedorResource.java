@@ -28,6 +28,11 @@ public class FornecedorResource {
         this.fornecedorRepository = fornecedorRepository;
     }
 
+    @GetMapping("list")
+    public List<Fornecedor> lista(){
+        return fornecedorRepository.findAll();
+    }
+
     @GetMapping("listar")
     public List<FornecedorResumo> listar(FornecedorFilter fornecedorFilter){
         return fornecedorRepository.resumoListar(fornecedorFilter);

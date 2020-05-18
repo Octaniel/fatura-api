@@ -28,14 +28,12 @@ public class VendaService {
 
     private final ItemProdutoRepository itemProdutoRepository;
 
-    private UsuarioRepository usuarioRepository;
 
-    public VendaService(ProdutoRepository produtoRepository, ApplicationEventPublisher publisher, VendaRepository vendaRepository, ItemProdutoRepository itemProdutoRepository,  UsuarioRepository usuarioRepository) {
+    public VendaService(ProdutoRepository produtoRepository, ApplicationEventPublisher publisher, VendaRepository vendaRepository, ItemProdutoRepository itemProdutoRepository) {
         this.produtoRepository = produtoRepository;
         this.publisher = publisher;
         this.vendaRepository = vendaRepository;
         this.itemProdutoRepository = itemProdutoRepository;
-        this.usuarioRepository = usuarioRepository;
     }
 
     public ResponseEntity<Venda> salvar(Venda venda, HttpServletResponse httpServletResponse) {

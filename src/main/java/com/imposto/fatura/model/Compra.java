@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_compra")
@@ -34,19 +35,15 @@ public class Compra {
     @ManyToOne
     private Fornecedor fornecedor;
 
-    @NotNull(message = "Deves selecionar um produto")
-    @JoinColumn(name = "tb_produto_id")
-    @ManyToOne
-    @JsonIgnoreProperties("fornecedors")
-    private Produto produto;
+    @JsonIgnoreProperties("")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "tb_item_produto_compra",joinColumns = @JoinColumn(name = "compra_id")
+            ,inverseJoinColumns = @JoinColumn(name = "produto_id"))
+    private List<Produto> produtos;
 
     @NotNull(message = "Deves inserir a data da compra")
     @Column(name = "data_compra")
     private LocalDate data;
-
-    @NotNull(message = "Quantidade é obrigatorio")
-    @Column(name = "quantidade_compra")
-    private Integer quantidade;
 
     @Column(name = "dt_cria")
     private LocalDateTime dataCriacao;

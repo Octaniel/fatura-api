@@ -40,7 +40,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepositoryQuery {
                     rootpro.get(Produto_.precoVenda), rootpro.get(Produto_.status), rootpro.get(Produto_.unidade),
                     rootpro.get(Produto_.stock), marcajoin.get(Marca_.NOME),
                     rootpro.get(Produto_.codigo), taxajoin.get(Taxa_.DESCRICAO),
-                    taxajoin.get(Taxa_.VALOR),rootpro.get(Produto_.valorInalteravel),rootpro.get(Produto_.emPromocao)));
+                    taxajoin.get(Taxa_.VALOR), rootpro.get(Produto_.valorInalteravel), rootpro.get(Produto_.emPromocao)));
 
 
             Predicate[] predicates = criarPredicatesResumo(produtoFilter, builder, rootpro, rootusu, rootemp);
@@ -118,7 +118,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepositoryQuery {
             predicates.add(builder.equal(rootpro.get(Produto_.STATUS), produtoFilter.getStatus()));
         }
 
-        if(tipoOferta.equals(TipoOferta.PRODUTO))predicates.add(builder.greaterThan(rootpro.get(Produto_.STOCK), 0));
+        if (tipoOferta.equals(TipoOferta.PRODUTO)) predicates.add(builder.greaterThan(rootpro.get(Produto_.STOCK), 0));
 
         return predicates.toArray(new Predicate[0]);
     }

@@ -49,9 +49,9 @@ public class FornecedorService {
             Optional<Usuario> byId1 = usuarioRepository.findById(x.getUsuarioCriouId());
             assert byId.orElse(null) != null;
             assert byId1.orElse(null) != null;
-            if (fornecedor.getNome().equals(x.getNome()) && !x.getId().equals(id) &&byId.orElse(null).getEmpresa().equals(byId1.orElse(null).getEmpresa()))
+            if (fornecedor.getNome().equals(x.getNome()) && !x.getId().equals(id) && byId.orElse(null).getEmpresa().equals(byId1.orElse(null).getEmpresa()))
                 throw new UsuarioException("Este nome já esta sendo utilizado por outro fornecedor");
-            if (fornecedor.getNif().equals(x.getNif()) && !x.getId().equals(id) &&byId.get().getEmpresa().equals(byId1.orElse(null).getEmpresa()))
+            if (fornecedor.getNif().equals(x.getNif()) && !x.getId().equals(id) && byId.get().getEmpresa().equals(byId1.orElse(null).getEmpresa()))
                 throw new UsuarioException("Este nif já esta sendo utilizado por outro fornecedor");
         });
     }

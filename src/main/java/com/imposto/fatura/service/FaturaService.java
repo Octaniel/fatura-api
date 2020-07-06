@@ -35,7 +35,7 @@ public class FaturaService {
         List<Venda> faturas = vendaRepository.paraDoc(documentoFilter);
         JSONArray jsonArray = new JSONArray();
         final FileWriter[] fileWriter = new FileWriter[5];
-        faturas.forEach(x ->{
+        faturas.forEach(x -> {
             JSONObject jsonObject = new JSONObject();
             JSONArray tbItensDocumentoGerados = new JSONArray();
 
@@ -43,7 +43,7 @@ public class FaturaService {
                 JSONObject tbItensDocumentoGeradosob = new JSONObject();
                 ItemProduto byVendaIdAAndProdutoId = itemProdutoRepository.findByIdVendaIdAndIdProdutoId(x.getId(), y.getId());
                 try {
-                    tbItensDocumentoGeradosob.put("codigoIsencao", y.getMotivoIsencao()==null? "": y.getMotivoIsencao().getCodigo());
+                    tbItensDocumentoGeradosob.put("codigoIsencao", y.getMotivoIsencao() == null ? "" : y.getMotivoIsencao().getCodigo());
                     tbItensDocumentoGeradosob.put("quantItens", byVendaIdAAndProdutoId.getQuantidade());
                     tbItensDocumentoGeradosob.put("descItens", y.getDescricao());
                     tbItensDocumentoGeradosob.put("valorItens", byVendaIdAAndProdutoId.getValorTotal());

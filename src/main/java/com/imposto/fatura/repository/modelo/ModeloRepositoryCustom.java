@@ -23,14 +23,14 @@ public class ModeloRepositoryCustom {
     private EntityManager Manager;
 
     public Page<Modelo> filtrar(Integer idEmpresa, Pageable pageable) {
-        TypedQuery<Modelo> typedQuery= getBuilder(idEmpresa, null);
+        TypedQuery<Modelo> typedQuery = getBuilder(idEmpresa, null);
         int size = typedQuery.getResultList().size();
-        adicionarRestricoesDePaginaResumo(typedQuery,pageable);
-        return new PageImpl<>(typedQuery.getResultList(),pageable,size);
+        adicionarRestricoesDePaginaResumo(typedQuery, pageable);
+        return new PageImpl<>(typedQuery.getResultList(), pageable, size);
     }
 
     public List<Modelo> listarPorMarca(Integer idEmpresa, Integer idMarca) {
-        TypedQuery<Modelo> typedQuery= getBuilder(idEmpresa, idMarca);
+        TypedQuery<Modelo> typedQuery = getBuilder(idEmpresa, idMarca);
         return typedQuery.getResultList();
     }
 
@@ -41,31 +41,31 @@ public class ModeloRepositoryCustom {
 
 
     private TypedQuery<Modelo> getBuilder(Integer idEmpresa, Integer idMarca) {
-        CriteriaBuilder builder=Manager.getCriteriaBuilder();
-        CriteriaQuery<Modelo> query=builder.createQuery(Modelo.class);
-        Root<Modelo> rootmod=query.from(Modelo.class);
-        Root<Empresa> rootemp=query.from(Empresa.class);
-        Root<Usuario> rootusu=query.from(Usuario.class);
-            query.select(rootmod);
-        Predicate[] predicates=criarPredicatesResumo(idEmpresa,builder,rootmod,rootemp,rootusu, idMarca);
+        CriteriaBuilder builder = Manager.getCriteriaBuilder();
+        CriteriaQuery<Modelo> query = builder.createQuery(Modelo.class);
+        Root<Modelo> rootmod = query.from(Modelo.class);
+        Root<Empresa> rootemp = query.from(Empresa.class);
+        Root<Usuario> rootusu = query.from(Usuario.class);
+        query.select(rootmod);
+        Predicate[] predicates = criarPredicatesResumo(idEmpresa, builder, rootmod, rootemp, rootusu, idMarca);
         query.where(predicates);
 
         return Manager.createQuery(query);
     }
 
     private void adicionarRestricoesDePaginaResumo(TypedQuery<Modelo> typedQuery, Pageable pageable) {
-        typedQuery.setFirstResult(pageable.getPageNumber()*pageable.getPageSize());
+        typedQuery.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
         typedQuery.setMaxResults(pageable.getPageSize());
     }
 
     private Predicate[] criarPredicatesResumo(Integer idEmpresa, CriteriaBuilder builder, Root<Modelo> rootmod, Root<Empresa> rootemp, Root<Usuario> rootusu, Integer idMarca) {
-        List<Predicate> predicates=new ArrayList<>();
-        predicates.add(builder.equal(rootusu.get(Usuario_.EMPRESA).get(Empresa_.ID),rootemp.get(Empresa_.ID)));
-        predicates.add(builder.equal(rootmod.get(Modelo_.USUARIO_CRIOU_ID),rootusu.get(Usuario_.ID)));
-        predicates.add(builder.equal(rootemp.get(Empresa_.ID),idEmpresa));
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(builder.equal(rootusu.get(Usuario_.EMPRESA).get(Empresa_.ID), rootemp.get(Empresa_.ID)));
+        predicates.add(builder.equal(rootmod.get(Modelo_.USUARIO_CRIOU_ID), rootusu.get(Usuario_.ID)));
+        predicates.add(builder.equal(rootemp.get(Empresa_.ID), idEmpresa));
 
-        if (idMarca!=null){
-            predicates.add(builder.equal(rootmod.get(Modelo_.MARCA).get(Marca_.ID),idMarca));
+        if (idMarca != null) {
+            predicates.add(builder.equal(rootmod.get(Modelo_.MARCA).get(Marca_.ID), idMarca));
         }
 
         return predicates.toArray(new Predicate[0]);

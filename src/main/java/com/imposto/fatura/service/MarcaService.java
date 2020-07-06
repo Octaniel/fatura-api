@@ -26,19 +26,19 @@ public class MarcaService {
         this.marcaRepository = marcaRepository;
     }
 
-    public ResponseEntity<Marca> salvar(Marca marca, HttpServletResponse httpServletResponse){
+    public ResponseEntity<Marca> salvar(Marca marca, HttpServletResponse httpServletResponse) {
         LocalDateTime localDateTime = LocalDateTime.now();
         marca.setDataAlteracao(localDateTime);
         marca.setDataCriacao(localDateTime);
         Marca save = marcaRepository.save(marca);
-        publisher.publishEvent(new RecursoCriadoEvent(this,httpServletResponse,save.getId()));
+        publisher.publishEvent(new RecursoCriadoEvent(this, httpServletResponse, save.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).body(save);
     }
 
-    public Marca atualizar(Marca marca, Integer id){
+    public Marca atualizar(Marca marca, Integer id) {
         Optional<Marca> byId = marcaRepository.findById(id);
         assert byId.orElse(null) != null;
-        BeanUtils.copyProperties(marca,byId.orElse(null),"id","dataCriacao");
+        BeanUtils.copyProperties(marca, byId.orElse(null), "id", "dataCriacao");
         byId.get().setDataAlteracao(LocalDateTime.now());
         return marcaRepository.save(byId.get());
     }

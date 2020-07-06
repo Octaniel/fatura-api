@@ -27,41 +27,41 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryQuery {
 
     @Override
     public Page<Usuario> filtrar(UsuarioFilter usuarioFilter, Pageable pageable) {
-        CriteriaBuilder Builder=Manager.getCriteriaBuilder();
-        CriteriaQuery<Usuario> criteria=Builder.createQuery(Usuario.class);
-        Root<Usuario> root=criteria.from(Usuario.class);
+        CriteriaBuilder Builder = Manager.getCriteriaBuilder();
+        CriteriaQuery<Usuario> criteria = Builder.createQuery(Usuario.class);
+        Root<Usuario> root = criteria.from(Usuario.class);
 
-        Predicate[] predicates=criarPredicates(usuarioFilter,Builder,root);
+        Predicate[] predicates = criarPredicates(usuarioFilter, Builder, root);
         criteria.where(predicates);
 
-        TypedQuery<Usuario> query=Manager.createQuery(criteria);
-        adicionarRestricoesDePagina(query,pageable);
-        return new PageImpl<>(query.getResultList(),pageable,total(usuarioFilter));
+        TypedQuery<Usuario> query = Manager.createQuery(criteria);
+        adicionarRestricoesDePagina(query, pageable);
+        return new PageImpl<>(query.getResultList(), pageable, total(usuarioFilter));
     }
 
     private Long total(UsuarioFilter usuarioFilter) {
-        CriteriaBuilder Builder=Manager.getCriteriaBuilder();
-        CriteriaQuery<Long> criteria=Builder.createQuery(Long.class);
-        Root<Usuario> root=criteria.from(Usuario.class);
+        CriteriaBuilder Builder = Manager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteria = Builder.createQuery(Long.class);
+        Root<Usuario> root = criteria.from(Usuario.class);
 
-        Predicate[] predicates=criarPredicates(usuarioFilter,Builder,root);
+        Predicate[] predicates = criarPredicates(usuarioFilter, Builder, root);
         criteria.where(predicates);
         criteria.select(Builder.count(root));
         return Manager.createQuery(criteria).getSingleResult();
     }
 
     private void adicionarRestricoesDePagina(TypedQuery<Usuario> query, Pageable pageable) {
-        query.setFirstResult(pageable.getPageNumber()*pageable.getPageSize());
+        query.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
         query.setMaxResults(pageable.getPageSize());
     }
 
     private Predicate[] criarPredicates(UsuarioFilter usuarioFilter, CriteriaBuilder builder, Root<Usuario> root) {
-        List<Predicate> predicates=new ArrayList<>();
-        if(!StringUtils.isEmpty(usuarioFilter.getNome())){
-            predicates.add(builder.like(builder.lower(root.get(Usuario_.NOME)),"%"+usuarioFilter.getNome().toLowerCase()+"%"));
+        List<Predicate> predicates = new ArrayList<>();
+        if (!StringUtils.isEmpty(usuarioFilter.getNome())) {
+            predicates.add(builder.like(builder.lower(root.get(Usuario_.NOME)), "%" + usuarioFilter.getNome().toLowerCase() + "%"));
         }
-        if(!StringUtils.isEmpty(usuarioFilter.getEmail())){
-            predicates.add(builder.like(builder.lower(root.get(Usuario_.EMAIL)),"%"+usuarioFilter.getEmail().toLowerCase()+"%"));
+        if (!StringUtils.isEmpty(usuarioFilter.getEmail())) {
+            predicates.add(builder.like(builder.lower(root.get(Usuario_.EMAIL)), "%" + usuarioFilter.getEmail().toLowerCase() + "%"));
         }
         return predicates.toArray(new Predicate[0]);
     }

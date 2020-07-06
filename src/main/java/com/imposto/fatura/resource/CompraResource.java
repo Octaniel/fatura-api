@@ -36,37 +36,37 @@ public class CompraResource {
     }
 
     @GetMapping("test")
-    public List<Compra> listarTeste(){
+    public List<Compra> listarTeste() {
         return compraRepository.findAll();
     }
 
     @GetMapping
-    public Page<CompraResumo> listar(CompraFilter compraFilter, Pageable pageable){
-       return compraCustomRepository.listar(compraFilter,pageable);
+    public Page<CompraResumo> listar(CompraFilter compraFilter, Pageable pageable) {
+        return compraCustomRepository.listar(compraFilter, pageable);
     }
 
     @GetMapping("/{id}")
-    public Compra listarUma(@PathVariable Integer id){
+    public Compra listarUma(@PathVariable Integer id) {
         Optional<Compra> byId = compraRepository.findById(id);
-        if(byId.isEmpty()){
+        if (byId.isEmpty()) {
             throw new EmpresaException("Não existe nenhuma compra com este id");
         }
         return byId.get();
     }
 
     @PostMapping
-    public ResponseEntity<Compra> save(@Valid @RequestBody Compra compra, HttpServletResponse httpServletResponse){
+    public ResponseEntity<Compra> save(@Valid @RequestBody Compra compra, HttpServletResponse httpServletResponse) {
         return compraService.salvar(compra, httpServletResponse);
     }
 
     @PutMapping("/{id}")
-    public Compra atualizar(@Valid @RequestBody Compra compra, @PathVariable Integer id){
-        return compraService.atualizar(compra,id);
+    public Compra atualizar(@Valid @RequestBody Compra compra, @PathVariable Integer id) {
+        return compraService.atualizar(compra, id);
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @DeleteMapping("/{id}")
-    public void apagar(@PathVariable Integer id){
+    public void apagar(@PathVariable Integer id) {
         compraRepository.deleteById(id);
     }
 }

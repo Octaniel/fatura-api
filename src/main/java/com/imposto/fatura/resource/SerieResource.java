@@ -36,34 +36,34 @@ public class SerieResource {
     }
 
     @GetMapping("listar")
-    public List<Serie> listar(Integer idEmpresa){
+    public List<Serie> listar(Integer idEmpresa) {
         return serieRepositoryCustom.resumo(idEmpresa);
     }
 
     @GetMapping
-    public Page<Serie> filtrar(Integer idEmpresa, Pageable pageable){
-       return serieRepositoryCustom.filtrar(idEmpresa,pageable);
+    public Page<Serie> filtrar(Integer idEmpresa, Pageable pageable) {
+        return serieRepositoryCustom.filtrar(idEmpresa, pageable);
     }
 
     @PostMapping
-    public ResponseEntity<Serie> salvar(@RequestBody @Valid Serie serie, HttpServletResponse httpServletResponse){
+    public ResponseEntity<Serie> salvar(@RequestBody @Valid Serie serie, HttpServletResponse httpServletResponse) {
         serie.setPreDefinida(false);
-        return serieService.salvar(serie,httpServletResponse);
+        return serieService.salvar(serie, httpServletResponse);
     }
 
     @GetMapping("tipoDocumento/listar")
-    public List<TipoDocumento> listar(){
+    public List<TipoDocumento> listar() {
         return tipoDocumentoRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public Serie atualizar(@PathVariable Integer id){
+    public Serie atualizar(@PathVariable Integer id) {
         return serieRepository.findById(id).orElse(null);
     }
 
     @PutMapping("predefinir/{id}")
-    public void atualizarPredifinir(@PathVariable Integer id, Integer idEmpresa){
-        serieRepositoryCustom.resumo(idEmpresa).forEach(x->{
+    public void atualizarPredifinir(@PathVariable Integer id, Integer idEmpresa) {
+        serieRepositoryCustom.resumo(idEmpresa).forEach(x -> {
             x.setPreDefinida(false);
             serieRepository.save(x);
         });
@@ -73,7 +73,7 @@ public class SerieResource {
     }
 
     @PutMapping("/{id}")
-    public Serie atualizar(@RequestBody @Valid Serie serie, @PathVariable Integer id){
+    public Serie atualizar(@RequestBody @Valid Serie serie, @PathVariable Integer id) {
         return serieService.atualizar(serie, id);
     }
 }

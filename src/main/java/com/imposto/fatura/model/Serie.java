@@ -27,7 +27,7 @@ public class Serie {
     private TipoDocumento tipoDocumento;
 
     @NotNull(message = "O numero da serie é obrigatorio")
-    @Size(max = 5, min = 5,message ="O número da serie deve ter apenas 5 digitos" )
+    @Size(max = 5, min = 5, message = "O número da serie deve ter apenas 5 digitos")
     @Column(name = "num_serie")
     private String numero;
 

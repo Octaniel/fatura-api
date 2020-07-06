@@ -26,19 +26,19 @@ public class TipoProdutoService {
         this.tipoProdutoRepository = tipoProdutoRepository;
     }
 
-    public ResponseEntity<TipoProduto> salvar(TipoProduto tipoProduto, HttpServletResponse httpServletResponse){
+    public ResponseEntity<TipoProduto> salvar(TipoProduto tipoProduto, HttpServletResponse httpServletResponse) {
         LocalDateTime localDateTime = LocalDateTime.now();
         tipoProduto.setDataAlteracao(localDateTime);
         tipoProduto.setDataCriacao(localDateTime);
         TipoProduto save = tipoProdutoRepository.save(tipoProduto);
-        publisher.publishEvent(new RecursoCriadoEvent(this,httpServletResponse,save.getId()));
+        publisher.publishEvent(new RecursoCriadoEvent(this, httpServletResponse, save.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).body(save);
     }
 
-    public TipoProduto atualizar(TipoProduto tipoProduto, Integer id){
+    public TipoProduto atualizar(TipoProduto tipoProduto, Integer id) {
         Optional<TipoProduto> byId = tipoProdutoRepository.findById(id);
         assert byId.orElse(null) != null;
-        BeanUtils.copyProperties(tipoProduto,byId.orElse(null),"id","dataCriacao");
+        BeanUtils.copyProperties(tipoProduto, byId.orElse(null), "id", "dataCriacao");
         byId.get().setDataAlteracao(LocalDateTime.now());
         return tipoProdutoRepository.save(byId.get());
     }

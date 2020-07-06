@@ -13,7 +13,10 @@ import java.util.List;
 
 public interface VendaRepositoryQuery {
     Page<Venda> filtrar(String nomeCliente, Pageable pageable);
+
     List<Venda> paraDoc(DocumentoFilter documentoFilter);
+
     Page<VendaResumo> resumo(VendaFilter vendaFilter, Pageable pageable);
+
     VendaResumoPro resumoPro(Integer id);
 }

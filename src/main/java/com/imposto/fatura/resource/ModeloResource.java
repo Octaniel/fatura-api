@@ -29,33 +29,33 @@ public class ModeloResource {
     }
 
     @GetMapping("listar")
-    public List<Modelo> listar(Integer idEmpresa){
-       return modeloRepositoryCustom.listar(idEmpresa);
+    public List<Modelo> listar(Integer idEmpresa) {
+        return modeloRepositoryCustom.listar(idEmpresa);
     }
 
     @GetMapping
-    public Page<Modelo> filtrar(Integer idEmpresa, Pageable pageable){
-        return modeloRepositoryCustom.filtrar(idEmpresa,pageable);
+    public Page<Modelo> filtrar(Integer idEmpresa, Pageable pageable) {
+        return modeloRepositoryCustom.filtrar(idEmpresa, pageable);
     }
 
     @PostMapping
-    public ResponseEntity<Modelo> salvar(@RequestBody @Valid Modelo modelo, HttpServletResponse httpServletResponse){
-        return modeloService.salvar(modelo,httpServletResponse);
+    public ResponseEntity<Modelo> salvar(@RequestBody @Valid Modelo modelo, HttpServletResponse httpServletResponse) {
+        return modeloService.salvar(modelo, httpServletResponse);
     }
 
     @PutMapping("/{id}")
-    public Modelo atualizar(@RequestBody @Valid Modelo modelo, @PathVariable Integer id){
+    public Modelo atualizar(@RequestBody @Valid Modelo modelo, @PathVariable Integer id) {
         return modeloService.atualizar(modelo, id);
     }
 
     @GetMapping("/{id}")
-    public Modelo findById(@PathVariable Integer id){
+    public Modelo findById(@PathVariable Integer id) {
         return modeloRepository.findById(id).orElse(null);
     }
 
     @GetMapping("marca/{id}")
-    public List<Modelo> atualizar(@PathVariable Integer id, Integer idEmpresa){
-        return modeloRepositoryCustom.listarPorMarca(idEmpresa,id);
+    public List<Modelo> atualizar(@PathVariable Integer id, Integer idEmpresa) {
+        return modeloRepositoryCustom.listarPorMarca(idEmpresa, id);
     }
 
 }

@@ -38,8 +38,8 @@ public class UsuarioService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public ResponseEntity<Usuario> salvar(Usuario usuario, HttpServletResponse httpServletResponse){
-        validar(usuario,0);
+    public ResponseEntity<Usuario> salvar(Usuario usuario, HttpServletResponse httpServletResponse) {
+        validar(usuario, 0);
         LocalDateTime localDateTime = LocalDateTime.now();
         usuario.setDataAlteracao(localDateTime);
         Usuario one = usuarioRepository.getOne(usuario.getUsuarioCriouId());
@@ -48,33 +48,37 @@ public class UsuarioService {
         usuario.setEmpresa(empresa);
         usuario.setDataCriacao(localDateTime);
 
-        String senhaTemporaria= criarSenha();
-        PasswordEncoder encoder= PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        String senhaTemporaria = criarSenha();
+        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         usuario.setSenha(encoder.encode(senhaTemporaria));
         usuario.setSenhaTemporaria(senhaTemporaria);
         usuario.setIsFirst(true);
         Usuario save = usuarioRepository.save(usuario);
-        publisher.publishEvent(new RecursoCriadoEvent(this,httpServletResponse,save.getId()));
+        publisher.publishEvent(new RecursoCriadoEvent(this, httpServletResponse, save.getId()));
         //String s = enviarEmail(usuario.getEmail(), senhaTemporaria);
         return ResponseEntity.status(HttpStatus.CREATED).body(save);
     }
-        private void validar(Usuario usuario, Integer id){
-            if(!usuario.getSenha().equals(usuario.getConfirmacaoSenha())) throw new UsuarioException("A Senha e a confirmação de senha são diferentes");
-            List<Usuario> all = usuarioRepository.findAll();
-            all.forEach(x->{
-                if(usuario.getNome().equals(x.getNome())&&!x.getId().equals(id)) throw new UsuarioException("Este nome já esta sendo utilizado por outro utilizador");
-                if(usuario.getEmail().equals(x.getEmail())&&!x.getId().equals(id)) throw new UsuarioException("Este email já esta sendo utilizado por outro utilizador");
-            });
-        }
 
-    private String enviarEmail(String email, String senhaTemporaria){
+    private void validar(Usuario usuario, Integer id) {
+        if (!usuario.getSenha().equals(usuario.getConfirmacaoSenha()))
+            throw new UsuarioException("A Senha e a confirmação de senha são diferentes");
+        List<Usuario> all = usuarioRepository.findAll();
+        all.forEach(x -> {
+            if (usuario.getNome().equals(x.getNome()) && !x.getId().equals(id))
+                throw new UsuarioException("Este nome já esta sendo utilizado por outro utilizador");
+            if (usuario.getEmail().equals(x.getEmail()) && !x.getId().equals(id))
+                throw new UsuarioException("Este email já esta sendo utilizado por outro utilizador");
+        });
+    }
+
+    private String enviarEmail(String email, String senhaTemporaria) {
         try {
             MimeMessage mail = mailSender.createMimeMessage();
 
-            MimeMessageHelper helper = new MimeMessageHelper( mail );
-            helper.setTo( email );
-            helper.setSubject( "Senha temporaria de sistema de faturação" );
-            helper.setText("<p>Senha Temporaria:"+senhaTemporaria+"</p>", true);
+            MimeMessageHelper helper = new MimeMessageHelper(mail);
+            helper.setTo(email);
+            helper.setSubject("Senha temporaria de sistema de faturação");
+            helper.setText("<p>Senha Temporaria:" + senhaTemporaria + "</p>", true);
             mailSender.send(mail);
 
             return "OK";
@@ -84,33 +88,33 @@ public class UsuarioService {
         }
     }
 
-    private String criarSenha(){
+    private String criarSenha() {
         RandomString random = new RandomString();
         Random random1 = new Random();
         String s = random.nextString();
-        String senha = (random1.nextInt(9)+1)+""+s.charAt(1)+""+(random1.nextInt(9)+1)+""+s.charAt(3);
+        String senha = (random1.nextInt(9) + 1) + "" + s.charAt(1) + "" + (random1.nextInt(9) + 1) + "" + s.charAt(3);
         return senha;
     }
 
-    public Usuario atualizar(Integer id, Usuario usuario){
-        validar(usuario,id);
+    public Usuario atualizar(Integer id, Usuario usuario) {
+        validar(usuario, id);
         Optional<Usuario> byId = usuarioRepository.findById(id);
         assert byId.orElse(null) != null;
-        BeanUtils.copyProperties(usuario,byId.orElse(null),"id","dataCriacao","senha","senhaTemporaria","usuarioCriouId","empresa");
+        BeanUtils.copyProperties(usuario, byId.orElse(null), "id", "dataCriacao", "senha", "senhaTemporaria", "usuarioCriouId", "empresa");
         byId.get().setDataAlteracao(LocalDateTime.now());
         //PasswordEncoder encoder= PasswordEncoderFactories.createDelegatingPasswordEncoder();
         //byId.get().setSenha(encoder.encode(byId.get().getSenha()));
         return usuarioRepository.save(byId.get());
     }
 
-    public Usuario atualizarSenha(Integer id, Usuario usuario){
-        if(!usuario.getSenha().equals(usuario.getConfirmacaoSenha())){
+    public Usuario atualizarSenha(Integer id, Usuario usuario) {
+        if (!usuario.getSenha().equals(usuario.getConfirmacaoSenha())) {
             throw new UsuarioException("Senha e confirmação de senha não são iguais");
         }
         Optional<Usuario> byId = usuarioRepository.findById(id);
         assert byId.orElse(null) != null;
         byId.orElse(null).setDataAlteracao(LocalDateTime.now());
-        PasswordEncoder encoder= PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         byId.get().setSenha(encoder.encode(usuario.getSenha()));
         byId.get().setIsFirst(false);
         return usuarioRepository.save(byId.get());

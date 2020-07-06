@@ -35,37 +35,37 @@ public class EmpresaResource {
     }
 
     @GetMapping("listar")
-    public List<Empresa> listar(){
+    public List<Empresa> listar() {
         return empresaRepository.findAll();
     }
 
     @GetMapping
-    public Page<EmpresaResumo> listarTabela(EmpresaFilter empresaFilter, Pageable pageable){
-        return empresaRepositoryimpl.listarTabela(empresaFilter,pageable);
+    public Page<EmpresaResumo> listarTabela(EmpresaFilter empresaFilter, Pageable pageable) {
+        return empresaRepositoryimpl.listarTabela(empresaFilter, pageable);
     }
 
     @GetMapping("/{id}")
-    public Empresa listarUma(@PathVariable Integer id){
+    public Empresa listarUma(@PathVariable Integer id) {
         Optional<Empresa> byId = empresaRepository.findById(id);
-        if(byId.isEmpty()){
+        if (byId.isEmpty()) {
             throw new EmpresaException("Não existe nenhuma empresa com este id");
         }
         return byId.get();
     }
 
     @PostMapping
-    public ResponseEntity<Empresa> salvar(@Valid @RequestBody Empresa empresa, HttpServletResponse httpServletResponse){
-        return empresaService.salvar(empresa,httpServletResponse);
+    public ResponseEntity<Empresa> salvar(@Valid @RequestBody Empresa empresa, HttpServletResponse httpServletResponse) {
+        return empresaService.salvar(empresa, httpServletResponse);
     }
 
     @PutMapping("/{id}")
-    public Empresa atualizar(@PathVariable Integer id,@Valid @RequestBody Empresa empresa){
-        return empresaService.atualizar(id,empresa);
+    public Empresa atualizar(@PathVariable Integer id, @Valid @RequestBody Empresa empresa) {
+        return empresaService.atualizar(id, empresa);
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @DeleteMapping("/{id}")
-    public void remover(@PathVariable Integer id){
+    public void remover(@PathVariable Integer id) {
         empresaRepository.deleteById(id);
     }
 

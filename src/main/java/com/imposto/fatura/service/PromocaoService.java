@@ -39,7 +39,7 @@ public class PromocaoService {
         this.produtoRepository = produtoRepository;
     }
 
-    public ResponseEntity<Promocao> salvar(Promocao promocao, HttpServletResponse httpServletResponse){
+    public ResponseEntity<Promocao> salvar(Promocao promocao, HttpServletResponse httpServletResponse) {
         LocalDateTime localDateTime = LocalDateTime.now();
         promocao.setDataAlteracao(localDateTime);
         promocao.setDataCriacao(localDateTime);
@@ -48,34 +48,34 @@ public class PromocaoService {
         one.setPrecoVenda(save.getValor());
         one.setEmPromocao(true);
         produtoRepository.save(one);
-        publisher.publishEvent(new RecursoCriadoEvent(this,httpServletResponse,save.getId()));
+        publisher.publishEvent(new RecursoCriadoEvent(this, httpServletResponse, save.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).body(save);
     }
 
     @Scheduled(cron = "0 0 18 * * *")
-    public void tirarPromocao(){
+    public void tirarPromocao() {
         List<Promocao> all = promocaoRepository.findAll();
         all.forEach(x -> {
-                if (x.getDataFim().equals(LocalDate.now())){
-                    Produto one = x.getProduto();
-                    one.setEmPromocao(false);
-                    produtoRepository.save(one);
-                }
+            if (x.getDataFim().equals(LocalDate.now())) {
+                Produto one = x.getProduto();
+                one.setEmPromocao(false);
+                produtoRepository.save(one);
+            }
         });
     }
 
-    public Promocao atualizar(Promocao promocao, Integer id){
+    public Promocao atualizar(Promocao promocao, Integer id) {
         Produto one = produtoRepository.getOne(promocao.getProduto().getId());
-        if (!promocao.getStatus()){
+        if (!promocao.getStatus()) {
             one.setEmPromocao(false);
             one.setPrecoVenda(one.getValorInalteravel());
-        }else{
+        } else {
             one.setPrecoVenda(promocao.getValor());
         }
         produtoRepository.save(one);
         Optional<Promocao> byId = promocaoRepository.findById(id);
         assert byId.orElse(null) != null;
-        BeanUtils.copyProperties(promocao,byId.orElse(null),"id","dataCriacao");
+        BeanUtils.copyProperties(promocao, byId.orElse(null), "id", "dataCriacao");
         byId.get().setDataAlteracao(LocalDateTime.now());
         return promocaoRepository.save(byId.get());
     }

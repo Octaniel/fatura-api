@@ -9,9 +9,10 @@ import java.util.Collection;
 public class UsuarioSistema extends User {
 
     private Usuario usuario;
+
     public UsuarioSistema(Usuario usu, Collection<? extends GrantedAuthority> authorities) {
         super(usu.getEmail(), usu.getSenha(), authorities);
-        usuario=usu;
+        usuario = usu;
     }
 
     public Usuario getUsuario() {

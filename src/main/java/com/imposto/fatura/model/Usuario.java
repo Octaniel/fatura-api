@@ -32,7 +32,7 @@ public class Usuario {
     @Column(name = "email_usuario")
     private String email;
 
-   // @NotBlank(message = "Senha é obrigatorio")
+    // @NotBlank(message = "Senha é obrigatorio")
     @Column(name = "senha_usuario")
     private String senha;
 
@@ -44,11 +44,11 @@ public class Usuario {
     @Transient
     private String confirmacaoSenha;
 
-    @Size(min = 1,message = "Pelo menos um grupo deve ser selecionado para o usuario")
+    @Size(min = 1, message = "Pelo menos um grupo deve ser selecionado para o usuario")
     @NotNull(message = "Pelo menos um grupo deve ser selecionado para o usuario")
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "tb_usuario_grupo",joinColumns = @JoinColumn(name = "usuario_id")
-            ,inverseJoinColumns = @JoinColumn(name = "grupo_id"))
+    @JoinTable(name = "tb_usuario_grupo", joinColumns = @JoinColumn(name = "usuario_id")
+            , inverseJoinColumns = @JoinColumn(name = "grupo_id"))
     private List<Grupo> grupos;
 
     @Column(name = "dt_cria")

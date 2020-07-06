@@ -26,7 +26,7 @@ public class VendaResumoPro {
     private Boolean status;
     private String nomeUserCriou;
     private String nomeUserAlterou;
-    @JsonIgnoreProperties({"venda","id"})
+    @JsonIgnoreProperties({"venda", "id"})
     private List<ItemProduto> itemProdutos;
     private LocalDateTime dataAlteracao;
     private Integer numero;
@@ -57,5 +57,6 @@ public class VendaResumoPro {
         this.descricaoTipoDocumento = descricaoTipoDocumento;
     }
 
-    public VendaResumoPro(){}
+    public VendaResumoPro() {
+    }
 }

@@ -12,13 +12,13 @@ import java.util.Map;
 public class CustomTokenEnhancer implements TokenEnhancer {
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
-        UsuarioSistema usuarioSistema=(UsuarioSistema)authentication.getPrincipal();
-        Map<String,Object> stringObjectMap= new HashMap<>();
-        stringObjectMap.put("nome",usuarioSistema.getUsuario().getNome());
-        stringObjectMap.put("empresa",usuarioSistema.getUsuario().getEmpresa());
-        stringObjectMap.put("idUsuario",usuarioSistema.getUsuario().getId());
-        stringObjectMap.put("isFirst",usuarioSistema.getUsuario().getIsFirst());
-        ((DefaultOAuth2AccessToken)accessToken).setAdditionalInformation(stringObjectMap);
+        UsuarioSistema usuarioSistema = (UsuarioSistema) authentication.getPrincipal();
+        Map<String, Object> stringObjectMap = new HashMap<>();
+        stringObjectMap.put("nome", usuarioSistema.getUsuario().getNome());
+        stringObjectMap.put("empresa", usuarioSistema.getUsuario().getEmpresa());
+        stringObjectMap.put("idUsuario", usuarioSistema.getUsuario().getId());
+        stringObjectMap.put("isFirst", usuarioSistema.getUsuario().getIsFirst());
+        ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(stringObjectMap);
         return accessToken;
     }
 

@@ -32,35 +32,36 @@ public class ClienteService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public ResponseEntity<Cliente> salvar(Cliente cliente, HttpServletResponse httpServletResponse){
+    public ResponseEntity<Cliente> salvar(Cliente cliente, HttpServletResponse httpServletResponse) {
         validarCliente(cliente, 0);
         LocalDateTime localDateTime = LocalDateTime.now();
         cliente.setDataAlteracao(localDateTime);
         cliente.setDataCriacao(localDateTime);
         Cliente save = clienteRepository.save(cliente);
-        publisher.publishEvent(new RecursoCriadoEvent(this,httpServletResponse,save.getId()));
+        publisher.publishEvent(new RecursoCriadoEvent(this, httpServletResponse, save.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).body(save);
     }
 
     private void validarCliente(Cliente cliente, Integer id) {
         List<Cliente> lista = clienteRepository.findAll();
-        lista.forEach(x ->{
+        lista.forEach(x -> {
             Optional<Usuario> byId = usuarioRepository.findById(cliente.getUsuarioCriouId());
             Optional<Usuario> byId1 = usuarioRepository.findById(x.getUsuarioCriouId());
             assert byId.orElse(null) != null;
             assert byId1.orElse(null) != null;
-            if(x.getNif().equals(cliente.getNif())
-                    &&byId.orElse(null).getEmpresa().equals(byId1.orElse(null).getEmpresa())
-                    &&!x.getId().equals(id)){
+            if (x.getNif().equals(cliente.getNif())
+                    && byId.orElse(null).getEmpresa().equals(byId1.orElse(null).getEmpresa())
+                    && !x.getId().equals(id)) {
                 throw new UsuarioException("Este nif já esta sendo utilizado por outro cliente");
             }
         });
     }
-    public Cliente atualizar(Integer id, Cliente cliente){
+
+    public Cliente atualizar(Integer id, Cliente cliente) {
         Optional<Cliente> byId = clienteRepository.findById(id);
         validarCliente(cliente, id);
         assert byId.orElse(null) != null;
-        BeanUtils.copyProperties(cliente,byId.orElse(null),"id","dataCriacao","usuarioCriouId");
+        BeanUtils.copyProperties(cliente, byId.orElse(null), "id", "dataCriacao", "usuarioCriouId");
         byId.get().setDataAlteracao(LocalDateTime.now());
         return clienteRepository.save(byId.get());
     }

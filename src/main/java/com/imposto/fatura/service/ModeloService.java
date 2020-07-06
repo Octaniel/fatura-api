@@ -25,19 +25,19 @@ public class ModeloService {
         this.modeloRepository = modeloRepository;
     }
 
-    public ResponseEntity<Modelo> salvar(Modelo modelo, HttpServletResponse httpServletResponse){
+    public ResponseEntity<Modelo> salvar(Modelo modelo, HttpServletResponse httpServletResponse) {
         LocalDateTime localDateTime = LocalDateTime.now();
         modelo.setDataAlteracao(localDateTime);
         modelo.setDataCriacao(localDateTime);
         Modelo save = modeloRepository.save(modelo);
-        publisher.publishEvent(new RecursoCriadoEvent(this,httpServletResponse,save.getId()));
+        publisher.publishEvent(new RecursoCriadoEvent(this, httpServletResponse, save.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).body(save);
     }
 
-    public Modelo atualizar(Modelo modelo, Integer id){
+    public Modelo atualizar(Modelo modelo, Integer id) {
         Optional<Modelo> byId = modeloRepository.findById(id);
         assert byId.orElse(null) != null;
-        BeanUtils.copyProperties(modelo,byId.orElse(null),"id","dataCriacao");
+        BeanUtils.copyProperties(modelo, byId.orElse(null), "id", "dataCriacao");
         byId.get().setDataAlteracao(LocalDateTime.now());
         return modeloRepository.save(byId.get());
     }

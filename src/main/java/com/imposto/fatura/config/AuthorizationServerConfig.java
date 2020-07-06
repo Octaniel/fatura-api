@@ -21,13 +21,14 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
+
 @Profile("oauth-security")
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     public final AuthenticationManager authenticationManager;
-    private final PasswordEncoder ps= PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    private final PasswordEncoder ps = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     private final CorsFilter corsConfiguration;
 
     public AuthorizationServerConfig(AuthenticationManager authenticationManager, CorsFilter corsConfiguration) {
@@ -38,24 +39,24 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory().withClient("angular")
-                    .secret( ps.encode("@ngul@r0"))
-                    .scopes("read","write")
-                    .authorizedGrantTypes("password","refresh_token")
-                    .accessTokenValiditySeconds(20)
-                    .refreshTokenValiditySeconds(3600*24)
+                .secret(ps.encode("@ngul@r0"))
+                .scopes("read", "write")
+                .authorizedGrantTypes("password", "refresh_token")
+                .accessTokenValiditySeconds(20)
+                .refreshTokenValiditySeconds(3600 * 24)
                 .and()
-                    .withClient("mobile")
-                    .secret("M0b1l3")
-                    .scopes("read")
-                    .authorizedGrantTypes("password","refresh_token")
-                    .accessTokenValiditySeconds(3600)
-                    .refreshTokenValiditySeconds(3600*24);
+                .withClient("mobile")
+                .secret("M0b1l3")
+                .scopes("read")
+                .authorizedGrantTypes("password", "refresh_token")
+                .accessTokenValiditySeconds(3600)
+                .refreshTokenValiditySeconds(3600 * 24);
     }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-        TokenEnhancerChain chain=new TokenEnhancerChain();
-        chain.setTokenEnhancers(Arrays.asList(tokenEnhancer(),accessTokenConverter()));
+        TokenEnhancerChain chain = new TokenEnhancerChain();
+        chain.setTokenEnhancers(Arrays.asList(tokenEnhancer(), accessTokenConverter()));
         endpoints
                 .tokenStore(tokenStore())
                 .tokenEnhancer(chain)
@@ -84,8 +85,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public TokenStore tokenStore() {
         return new JwtTokenStore(accessTokenConverter());
     }
-
-
 
 
 }

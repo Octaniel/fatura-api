@@ -37,8 +37,8 @@ public class Compra {
 
     @JsonIgnoreProperties("")
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "tb_item_produto_compra",joinColumns = @JoinColumn(name = "compra_id")
-            ,inverseJoinColumns = @JoinColumn(name = "produto_id"))
+    @JoinTable(name = "tb_item_produto_compra", joinColumns = @JoinColumn(name = "compra_id")
+            , inverseJoinColumns = @JoinColumn(name = "produto_id"))
     private List<Produto> produtos;
 
     @NotNull(message = "Deves inserir a data da compra")

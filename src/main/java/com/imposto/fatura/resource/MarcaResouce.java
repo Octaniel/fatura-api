@@ -29,27 +29,27 @@ public class MarcaResouce {
     }
 
     @GetMapping("listar")
-    public List<Marca> listar(MarcaFilter marcaFilter){
+    public List<Marca> listar(MarcaFilter marcaFilter) {
         return marcaRepositoryCustom.listar(marcaFilter);
     }
 
     @GetMapping
-    public Page<Marca> filtrar(MarcaFilter marcaFilter, Pageable pageable){
-        return marcaRepositoryCustom.filtrar(marcaFilter,pageable);
+    public Page<Marca> filtrar(MarcaFilter marcaFilter, Pageable pageable) {
+        return marcaRepositoryCustom.filtrar(marcaFilter, pageable);
     }
 
     @PostMapping
-    public ResponseEntity<Marca> salvar(@RequestBody @Valid Marca marca, HttpServletResponse httpServletResponse){
-        return marcaService.salvar(marca,httpServletResponse);
+    public ResponseEntity<Marca> salvar(@RequestBody @Valid Marca marca, HttpServletResponse httpServletResponse) {
+        return marcaService.salvar(marca, httpServletResponse);
     }
 
     @PutMapping("/{id}")
-    public Marca atualizar(@RequestBody @Valid Marca marca, @PathVariable Integer id){
+    public Marca atualizar(@RequestBody @Valid Marca marca, @PathVariable Integer id) {
         return marcaService.atualizar(marca, id);
     }
 
     @GetMapping("/{id}")
-    public Marca listarPorId(@PathVariable Integer id){
+    public Marca listarPorId(@PathVariable Integer id) {
         return marcaRepository.findById(id).orElse(null);
     }
 }

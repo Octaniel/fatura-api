@@ -7,10 +7,11 @@ import javax.servlet.http.HttpServletResponse;
 public class RecursoCriadoEvent extends ApplicationEvent {
     private HttpServletResponse httpServletResponse;
     private Integer id;
+
     public RecursoCriadoEvent(Object source, HttpServletResponse httpServletResponse, Integer id) {
         super(source);
-        this.httpServletResponse=httpServletResponse;
-        this.id=id;
+        this.httpServletResponse = httpServletResponse;
+        this.id = id;
     }
 
     public HttpServletResponse getHttpServletResponse() {

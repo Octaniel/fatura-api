@@ -37,64 +37,71 @@ public class FaturaExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
-        String mensagemUsuario=messageSource.getMessage("menssagem.invalida",null, LocaleContextHolder.getLocale());
-        String mensagemDoDesenvolvedor=ex.getCause()==null?ex.toString():ex.getCause().toString();
-        return handleExceptionInternal(ex, new Erro(mensagemUsuario, mensagemDoDesenvolvedor),headers,HttpStatus.BAD_REQUEST,request);
+        String mensagemUsuario = messageSource.getMessage("menssagem.invalida", null, LocaleContextHolder.getLocale());
+        String mensagemDoDesenvolvedor = ex.getCause() == null ? ex.toString() : ex.getCause().toString();
+        return handleExceptionInternal(ex, new Erro(mensagemUsuario, mensagemDoDesenvolvedor), headers, HttpStatus.BAD_REQUEST, request);
     }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
         List<Erro> erros = criarListaDeErros(ex.getBindingResult());
-        return handleExceptionInternal(ex,erros,headers,HttpStatus.BAD_REQUEST,request);
+        return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
     }
-    private List<Erro> criarListaDeErros(BindingResult bindingResult){
-        List<Erro> erros =new ArrayList<>();
-        for (FieldError fieldeerror:bindingResult.getFieldErrors()) {
-            String mensagemUsuario=messageSource.getMessage(fieldeerror,LocaleContextHolder.getLocale());
-            String mensagemDoDesenvolvedor=fieldeerror.toString();
+
+    private List<Erro> criarListaDeErros(BindingResult bindingResult) {
+        List<Erro> erros = new ArrayList<>();
+        for (FieldError fieldeerror : bindingResult.getFieldErrors()) {
+            String mensagemUsuario = messageSource.getMessage(fieldeerror, LocaleContextHolder.getLocale());
+            String mensagemDoDesenvolvedor = fieldeerror.toString();
             erros.add(new Erro(mensagemUsuario, mensagemDoDesenvolvedor));
         }
         return erros;
     }
+
     @ExceptionHandler({EmptyResultDataAccessException.class})
-    public ResponseEntity<Object> handlerEmptyResultDataAccessException(EmptyResultDataAccessException ex,WebRequest request){
-        String mensagemUsuario=messageSource.getMessage("recurso.nao-encontrado",null, LocaleContextHolder.getLocale());
-        String mensagemDoDesenvolvedor=ex.toString();
-        List<Erro> erros= Collections.singletonList(new Erro(mensagemUsuario, mensagemDoDesenvolvedor));
-        return handleExceptionInternal(ex,erros,new HttpHeaders(),HttpStatus.NOT_FOUND,request);
+    public ResponseEntity<Object> handlerEmptyResultDataAccessException(EmptyResultDataAccessException ex, WebRequest request) {
+        String mensagemUsuario = messageSource.getMessage("recurso.nao-encontrado", null, LocaleContextHolder.getLocale());
+        String mensagemDoDesenvolvedor = ex.toString();
+        List<Erro> erros = Collections.singletonList(new Erro(mensagemUsuario, mensagemDoDesenvolvedor));
+        return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
+
     @ExceptionHandler({DataIntegrityViolationException.class})
-    public ResponseEntity<Object> handlerDataIntegrityViolationException(DataIntegrityViolationException ex,WebRequest request){
-        String mensagemUsuario=messageSource.getMessage("recurso.operacao-nao-permitida",null, LocaleContextHolder.getLocale());
-        String mensagemDoDesenvolvedor= ExceptionUtils.getRootCauseMessage(ex);
-        List<Erro> erros= Collections.singletonList(new Erro(mensagemUsuario, mensagemDoDesenvolvedor));
-        return handleExceptionInternal(ex,erros,new HttpHeaders(),HttpStatus.BAD_REQUEST,request);
+    public ResponseEntity<Object> handlerDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
+        String mensagemUsuario = messageSource.getMessage("recurso.operacao-nao-permitida", null, LocaleContextHolder.getLocale());
+        String mensagemDoDesenvolvedor = ExceptionUtils.getRootCauseMessage(ex);
+        List<Erro> erros = Collections.singletonList(new Erro(mensagemUsuario, mensagemDoDesenvolvedor));
+        return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
+
     @ExceptionHandler({EmpresaException.class})
-    public ResponseEntity<Object> handlerEmpresaException(EmpresaException ex,WebRequest request){
-        String mensagemUsuario=ex.getMessage();
-        String mensagemDoDesenvolvedor= ExceptionUtils.getRootCauseMessage(ex);
-        List<Erro> erros= Collections.singletonList(new Erro(mensagemUsuario, mensagemDoDesenvolvedor));
-        return handleExceptionInternal(ex,erros,new HttpHeaders(),HttpStatus.BAD_REQUEST,request);
+    public ResponseEntity<Object> handlerEmpresaException(EmpresaException ex, WebRequest request) {
+        String mensagemUsuario = ex.getMessage();
+        String mensagemDoDesenvolvedor = ExceptionUtils.getRootCauseMessage(ex);
+        List<Erro> erros = Collections.singletonList(new Erro(mensagemUsuario, mensagemDoDesenvolvedor));
+        return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
+
     @ExceptionHandler({ClienteException.class})
-    public ResponseEntity<Object> handlerClienteException(ClienteException ex,WebRequest request){
-        String mensagemUsuario=messageSource.getMessage("mesmo.cliente-NiF",null, LocaleContextHolder.getLocale());
-        String mensagemDoDesenvolvedor= ExceptionUtils.getRootCauseMessage(ex);
-        List<Erro> erros= Collections.singletonList(new Erro(mensagemUsuario, mensagemDoDesenvolvedor));
-        return handleExceptionInternal(ex,erros,new HttpHeaders(),HttpStatus.BAD_REQUEST,request);
+    public ResponseEntity<Object> handlerClienteException(ClienteException ex, WebRequest request) {
+        String mensagemUsuario = messageSource.getMessage("mesmo.cliente-NiF", null, LocaleContextHolder.getLocale());
+        String mensagemDoDesenvolvedor = ExceptionUtils.getRootCauseMessage(ex);
+        List<Erro> erros = Collections.singletonList(new Erro(mensagemUsuario, mensagemDoDesenvolvedor));
+        return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
+
     @ExceptionHandler({UsuarioException.class})
-    public ResponseEntity<Object> handlerUsuarioException(UsuarioException ex,WebRequest request){
-        String mensagemUsuario=ex.getMessage();
-        String mensagemDoDesenvolvedor= ExceptionUtils.getRootCauseMessage(ex);
-        List<Erro> erros= Collections.singletonList(new Erro(mensagemUsuario, mensagemDoDesenvolvedor));
-        return handleExceptionInternal(ex,erros,new HttpHeaders(),HttpStatus.BAD_REQUEST,request);
+    public ResponseEntity<Object> handlerUsuarioException(UsuarioException ex, WebRequest request) {
+        String mensagemUsuario = ex.getMessage();
+        String mensagemDoDesenvolvedor = ExceptionUtils.getRootCauseMessage(ex);
+        List<Erro> erros = Collections.singletonList(new Erro(mensagemUsuario, mensagemDoDesenvolvedor));
+        return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
+
     @Getter
     @Setter
-    public static class Erro{
+    public static class Erro {
         private String mensagemUsuario;
         private String mensagemDoDesenvolvedor;
 

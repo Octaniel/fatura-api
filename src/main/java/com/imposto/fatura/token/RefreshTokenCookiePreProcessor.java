@@ -20,19 +20,20 @@ public class RefreshTokenCookiePreProcessor implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
-        HttpServletRequest request=(HttpServletRequest) servletRequest;
-        if(("/oauth/token".equalsIgnoreCase(request.getRequestURI()))
-                &&("refresh_token".equals(request.getParameter("grant_type")))
-                &&(request.getCookies()!=null)){
-            for(Cookie cookie:request.getCookies()){
-                if(cookie.getName().equals("refreshToken")){
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        if (("/oauth/token".equalsIgnoreCase(request.getRequestURI()))
+                && ("refresh_token".equals(request.getParameter("grant_type")))
+                && (request.getCookies() != null)) {
+            for (Cookie cookie : request.getCookies()) {
+                if (cookie.getName().equals("refreshToken")) {
                     String cookieValue = cookie.getValue();
-                    request=new MyServletRequestWrapper(request,cookieValue);
+                    request = new MyServletRequestWrapper(request, cookieValue);
                 }
             }
         }
-        filterChain.doFilter(request,servletResponse);
+        filterChain.doFilter(request, servletResponse);
     }
+
     @Override
     public void init(FilterConfig filterConfig) {
     }
@@ -43,15 +44,16 @@ public class RefreshTokenCookiePreProcessor implements Filter {
 
     static class MyServletRequestWrapper extends HttpServletRequestWrapper {
         private String refreshToken;
-        public MyServletRequestWrapper(HttpServletRequest request,String refreshToken) {
+
+        public MyServletRequestWrapper(HttpServletRequest request, String refreshToken) {
             super(request);
-            this.refreshToken=refreshToken;
+            this.refreshToken = refreshToken;
         }
 
         @Override
         public Map<String, String[]> getParameterMap() {
-            ParameterMap<String,String[]> map= new ParameterMap<>(getRequest().getParameterMap());
-            map.put("refresh_token",new String[]{refreshToken});
+            ParameterMap<String, String[]> map = new ParameterMap<>(getRequest().getParameterMap());
+            map.put("refresh_token", new String[]{refreshToken});
             map.setLocked(true);
             return map;
         }

@@ -26,33 +26,35 @@ public class SerieService {
         this.publisher = publisher;
     }
 
-    public ResponseEntity<Serie> salvar(Serie serie, HttpServletResponse httpServletResponse){
+    public ResponseEntity<Serie> salvar(Serie serie, HttpServletResponse httpServletResponse) {
         validar(serie, 0);
         LocalDateTime localDateTime = LocalDateTime.now();
         serie.setDataAlteracao(localDateTime);
         serie.setDataCriacao(localDateTime);
         Serie save = serieRepository.save(serie);
-        publisher.publishEvent(new RecursoCriadoEvent(this,httpServletResponse,save.getId()));
+        publisher.publishEvent(new RecursoCriadoEvent(this, httpServletResponse, save.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).body(save);
     }
 
     private void validar(Serie serie, Integer id) {
         List<Serie> all = serieRepository.findAll();
-        String unicoNova=serie.getTipoDocumento().getSigla()+serie.getNumero()+serie.getAno();
+        String unicoNova = serie.getTipoDocumento().getSigla() + serie.getNumero() + serie.getAno();
         System.out.println(unicoNova);
-        all.forEach(x->{
-            String unicoBase=x.getTipoDocumento().getSigla()+x.getNumero()+x.getAno();
+        all.forEach(x -> {
+            String unicoBase = x.getTipoDocumento().getSigla() + x.getNumero() + x.getAno();
             System.out.println(unicoBase);
-            if (unicoBase.equals(unicoNova)&&x.getId()!=serie.getId()) throw new UsuarioException("Serie existente");
-            if (x.getNumeroAutorizacao().equals(serie.getNumeroAutorizacao())&&x.getId()!=serie.getId()) throw new UsuarioException("Por favor confirme o seu número de autorização");
+            if (unicoBase.equals(unicoNova) && x.getId() != serie.getId())
+                throw new UsuarioException("Serie existente");
+            if (x.getNumeroAutorizacao().equals(serie.getNumeroAutorizacao()) && x.getId() != serie.getId())
+                throw new UsuarioException("Por favor confirme o seu número de autorização");
         });
     }
 
-    public Serie atualizar(Serie serie, Integer id){
+    public Serie atualizar(Serie serie, Integer id) {
         validar(serie, id);
         Optional<Serie> byId = serieRepository.findById(id);
         assert byId.orElse(null) != null;
-        BeanUtils.copyProperties(serie,byId.orElse(null),"id","dataCriacao");
+        BeanUtils.copyProperties(serie, byId.orElse(null), "id", "dataCriacao");
         byId.get().setDataAlteracao(LocalDateTime.now());
         return serieRepository.save(byId.get());
     }

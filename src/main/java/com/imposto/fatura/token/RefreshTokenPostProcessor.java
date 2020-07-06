@@ -33,15 +33,15 @@ public class RefreshTokenPostProcessor implements ResponseBodyAdvice<OAuth2Acces
 
     @Override
     public OAuth2AccessToken beforeBodyWrite(OAuth2AccessToken oAuth2AccessToken, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
-        HttpServletRequest request=((ServletServerHttpRequest) serverHttpRequest).getServletRequest();
-        HttpServletResponse response=((ServletServerHttpResponse) serverHttpResponse).getServletResponse();
+        HttpServletRequest request = ((ServletServerHttpRequest) serverHttpRequest).getServletRequest();
+        HttpServletResponse response = ((ServletServerHttpResponse) serverHttpResponse).getServletResponse();
 
-        DefaultOAuth2AccessToken token=(DefaultOAuth2AccessToken) oAuth2AccessToken;
+        DefaultOAuth2AccessToken token = (DefaultOAuth2AccessToken) oAuth2AccessToken;
 
         String value = oAuth2AccessToken.getRefreshToken().getValue();
-        adicionarRefreshTokenNoCokies(value,request,response);
+        adicionarRefreshTokenNoCokies(value, request, response);
         String bmobile = request.getHeader("bmobile");
-        if(bmobile==null)removerRefreshTokenNoBody(token);
+        if (bmobile == null) removerRefreshTokenNoBody(token);
         return oAuth2AccessToken;
     }
 
@@ -50,10 +50,10 @@ public class RefreshTokenPostProcessor implements ResponseBodyAdvice<OAuth2Acces
     }
 
     private void adicionarRefreshTokenNoCokies(String value, HttpServletRequest request, HttpServletResponse response) {
-        Cookie cookie=new Cookie("refreshToken",value);
+        Cookie cookie = new Cookie("refreshToken", value);
         cookie.setHttpOnly(true);
         cookie.setSecure(property.getSeguranca().isEnableHttps());//TODO:Mudar para true em produção
-        cookie.setPath(request.getContextPath()+"/oauth/token");
+        cookie.setPath(request.getContextPath() + "/oauth/token");
         cookie.setMaxAge(2592000);
         response.addCookie(cookie);
     }

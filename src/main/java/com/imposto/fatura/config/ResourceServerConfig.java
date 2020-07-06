@@ -35,13 +35,16 @@ import java.util.Properties;
 class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
-    public ResourceServerConfig(@Qualifier("appUserDetailService") UserDetailsService uds){
-        this.userDetailsService=uds;
+
+    public ResourceServerConfig(@Qualifier("appUserDetailService") UserDetailsService uds) {
+        this.userDetailsService = uds;
     }
+
     @Autowired
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -61,10 +64,12 @@ class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(ResourceServerSecurityConfigurer resources) {
         resources.stateless(true);
     }
+
     @Bean
-    public MethodSecurityExpressionHandler methodSecurityExpressionHandler(){
+    public MethodSecurityExpressionHandler methodSecurityExpressionHandler() {
         return new OAuth2MethodSecurityExpressionHandler();
     }
+
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -84,15 +89,15 @@ class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     }
 
     @Bean
-    public CorsFilter corsFilter(){
+    public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.setMaxAge(36000L);
-        config.setAllowedOrigins(Arrays.asList("http://192.168.1.103:4200","http://localhost:8100","http://192.168.1.102:4200","http://localhost","*"));
+        config.setAllowedOrigins(Arrays.asList("http://192.168.1.103:4200", "http://localhost:8100", "http://192.168.1.102:4200", "http://localhost", "*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**",config);
+        source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
 

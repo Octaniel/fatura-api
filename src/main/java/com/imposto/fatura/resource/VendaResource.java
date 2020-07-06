@@ -44,37 +44,37 @@ public class VendaResource {
     }
 
     @PostMapping
-    public ResponseEntity<Venda> salvar(@Valid @RequestBody Venda venda, HttpServletResponse httpServletResponse){
+    public ResponseEntity<Venda> salvar(@Valid @RequestBody Venda venda, HttpServletResponse httpServletResponse) {
         return vendaService.salvar(venda, httpServletResponse);
     }
 
     @GetMapping
-    public Page<VendaResumo> filtrar(VendaFilter vendaFilter, Pageable pageable){
-        return vendaRepository.resumo(vendaFilter,pageable);
+    public Page<VendaResumo> filtrar(VendaFilter vendaFilter, Pageable pageable) {
+        return vendaRepository.resumo(vendaFilter, pageable);
     }
 
     @GetMapping("ult/{idSerie}")
-    public Venda ultimaVenda(@PathVariable Integer idSerie){
+    public Venda ultimaVenda(@PathVariable Integer idSerie) {
         List<Venda> allBySerieNumero = vendaRepository.findAllBySerieId(idSerie);
-        if (allBySerieNumero.size()>0)
-       return allBySerieNumero.get(allBySerieNumero.size()-1);
+        if (allBySerieNumero.size() > 0)
+            return allBySerieNumero.get(allBySerieNumero.size() - 1);
         else return new Venda();
     }
 
     @GetMapping("fatura/ficheiro")
-    public ResponseEntity<byte[]> paraDoc(DocumentoFilter documentoFilter){
+    public ResponseEntity<byte[]> paraDoc(DocumentoFilter documentoFilter) {
         byte[] bytes = faturaService.paraDoc(documentoFilter);
         System.out.println(bytes[0]);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(bytes);
     }
 
     @GetMapping("/{id}")
-    public VendaResumoPro listarPorId(@PathVariable Integer id){
+    public VendaResumoPro listarPorId(@PathVariable Integer id) {
         List<ItemProduto> itemProdutos = new ArrayList<>();
         VendaResumoPro vendaResumoPro = vendaRepository.resumoPro(id);
         IdItemproduto idItemproduto = new IdItemproduto();
         Venda one = vendaRepository.getOne(id);
-        one.getProdutos().forEach(x->{
+        one.getProdutos().forEach(x -> {
             idItemproduto.setProduto(x);
             idItemproduto.setVenda(one);
             Optional<ItemProduto> byId = itemProdutoRepository.findById(idItemproduto);
@@ -86,8 +86,8 @@ public class VendaResource {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @DeleteMapping("/{id}") 
-    public void remover(@PathVariable Integer id){
+    @DeleteMapping("/{id}")
+    public void remover(@PathVariable Integer id) {
         vendaRepository.deleteById(id);
     }
 

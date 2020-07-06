@@ -27,17 +27,17 @@ public class PromocaoResource {
     }
 
     @GetMapping
-    public List<Promocao> listar(){
+    public List<Promocao> listar() {
         return promocaoRepository.findAll();
     }
 
     @PostMapping
-    public ResponseEntity<Promocao> salvar(@RequestBody @Valid Promocao promocao, HttpServletResponse httpServletResponse){
-        return promocaoService.salvar(promocao,httpServletResponse);
+    public ResponseEntity<Promocao> salvar(@RequestBody @Valid Promocao promocao, HttpServletResponse httpServletResponse) {
+        return promocaoService.salvar(promocao, httpServletResponse);
     }
 
     @PutMapping("/{id}")
-    public Promocao atualizar(@RequestBody @Valid Promocao promocao, @PathVariable Integer id){
+    public Promocao atualizar(@RequestBody @Valid Promocao promocao, @PathVariable Integer id) {
         return promocaoService.atualizar(promocao, id);
     }
 }

@@ -47,7 +47,8 @@ public class VendaService {
         AtomicReference<Double> valorTotal = new AtomicReference<>(0d);
         produtos.forEach(x1 -> {
             Produto one = produtoRepository.getOne(x1.getId());
-            if(one.getStock()<x1.getQuantidadeItem()&&one.getNatureza().equals(TipoOferta.PRODUTO)) throw new UsuarioException("Só existe "+one.getStock()+" de "+one.getNome()+" para venda");
+            if (one.getStock() < x1.getQuantidadeItem() && one.getNatureza().equals(TipoOferta.PRODUTO))
+                throw new UsuarioException("Só existe " + one.getStock() + " de " + one.getNome() + " para venda");
         });
         Venda save = vendaRepository.save(venda);
         produtos.forEach(x -> {
@@ -66,7 +67,7 @@ public class VendaService {
             valorImposto.updateAndGet(v -> v + itemProduto.getValorImposto());
             valorTotal.updateAndGet(v -> v + itemProduto.getValorTotal());
             itemProduto.setQuantidade(x.getQuantidadeItem());
-            if(one.getNatureza().equals(TipoOferta.PRODUTO)) one.setStock(one.getStock()-x.getQuantidadeItem());
+            if (one.getNatureza().equals(TipoOferta.PRODUTO)) one.setStock(one.getStock() - x.getQuantidadeItem());
             produtoRepository.save(one);
             itemProdutoRepository.save(itemProduto);
         });

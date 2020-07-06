@@ -30,32 +30,33 @@ public class ClienteResource {
     }
 
     @GetMapping("listar")
-    public List<Cliente> listar(){
-       return clienteRepository.findAll();
+    public List<Cliente> listar() {
+        return clienteRepository.findAll();
     }
 
     @GetMapping
-    public Page<ClienteResumo> listarTabela(ClienteFilter clienteFilter, Pageable pageable){
-        return clienteRepository.resumo(clienteFilter,pageable);
+    public Page<ClienteResumo> listarTabela(ClienteFilter clienteFilter, Pageable pageable) {
+        return clienteRepository.resumo(clienteFilter, pageable);
     }
+
     @GetMapping("/{id}")
-    public Cliente atualizar(@PathVariable Integer id){
+    public Cliente atualizar(@PathVariable Integer id) {
         return clienteRepository.findById(id).orElse(null);
     }
 
     @PostMapping
-    public ResponseEntity<Cliente> salvar(@Valid @RequestBody Cliente cliente, HttpServletResponse httpServletResponse){
-        return clienteService.salvar(cliente,httpServletResponse);
+    public ResponseEntity<Cliente> salvar(@Valid @RequestBody Cliente cliente, HttpServletResponse httpServletResponse) {
+        return clienteService.salvar(cliente, httpServletResponse);
     }
 
     @PutMapping("/{id}")
-    public Cliente atualizar(@PathVariable Integer id,@Valid @RequestBody Cliente cliente){
-        return clienteService.atualizar(id,cliente);
+    public Cliente atualizar(@PathVariable Integer id, @Valid @RequestBody Cliente cliente) {
+        return clienteService.atualizar(id, cliente);
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @DeleteMapping("/{id}")
-    public void remover(@PathVariable Integer id){
+    public void remover(@PathVariable Integer id) {
         clienteRepository.deleteById(id);
     }
 

@@ -25,38 +25,38 @@ public class FornecedorRepositoryImpl implements FornecedorRepositoryQuery {
 
     @Override
     public Page<Fornecedor> filtrar(FornecedorFilter fornecedorFilter, Pageable pageable) {
-        CriteriaBuilder Builder=Manager.getCriteriaBuilder();
-        CriteriaQuery<Fornecedor> criteria=Builder.createQuery(Fornecedor.class);
-        Root<Fornecedor> root=criteria.from(Fornecedor.class);
+        CriteriaBuilder Builder = Manager.getCriteriaBuilder();
+        CriteriaQuery<Fornecedor> criteria = Builder.createQuery(Fornecedor.class);
+        Root<Fornecedor> root = criteria.from(Fornecedor.class);
 
-        Predicate[] predicates=criarPredicates(fornecedorFilter,Builder,root);
+        Predicate[] predicates = criarPredicates(fornecedorFilter, Builder, root);
         criteria.where(predicates);
 
-        TypedQuery<Fornecedor> query=Manager.createQuery(criteria);
-        adicionarRestricoesDePagina(query,pageable);
-        return new PageImpl<>(query.getResultList(),pageable,total(fornecedorFilter));
+        TypedQuery<Fornecedor> query = Manager.createQuery(criteria);
+        adicionarRestricoesDePagina(query, pageable);
+        return new PageImpl<>(query.getResultList(), pageable, total(fornecedorFilter));
     }
 
     @Override
     public Page<FornecedorResumo> resumo(FornecedorFilter fornecedorFilter, Pageable pageable) {
         TypedQuery<FornecedorResumo> typedQuery = getFornecedorResumoTypedQuery(fornecedorFilter);
         int size = typedQuery.getResultList().size();
-        adicionarRestricoesDePaginaResumo(typedQuery,pageable);
-        return new PageImpl<>(typedQuery.getResultList(),pageable,size);
+        adicionarRestricoesDePaginaResumo(typedQuery, pageable);
+        return new PageImpl<>(typedQuery.getResultList(), pageable, size);
     }
 
     private TypedQuery<FornecedorResumo> getFornecedorResumoTypedQuery(FornecedorFilter fornecedorFilter) {
-        CriteriaBuilder builder=Manager.getCriteriaBuilder();
-        CriteriaQuery<FornecedorResumo> query=builder.createQuery(FornecedorResumo.class);
-        Root<Fornecedor> rootfor=query.from(Fornecedor.class);
-        Root<Empresa> rootemp=query.from(Empresa.class);
-        Root<Usuario> rootusu=query.from(Usuario.class);
+        CriteriaBuilder builder = Manager.getCriteriaBuilder();
+        CriteriaQuery<FornecedorResumo> query = builder.createQuery(FornecedorResumo.class);
+        Root<Fornecedor> rootfor = query.from(Fornecedor.class);
+        Root<Empresa> rootemp = query.from(Empresa.class);
+        Root<Usuario> rootusu = query.from(Usuario.class);
 
         query.select(builder.construct(FornecedorResumo.class
-                ,rootfor.get(Fornecedor_.id),rootfor.get(Fornecedor_.nome),rootfor.get(Fornecedor_.nif),
-                rootfor.get(Fornecedor_.endereco),rootfor.get(Fornecedor_.email),rootfor.get(Fornecedor_.telefone)));
+                , rootfor.get(Fornecedor_.id), rootfor.get(Fornecedor_.nome), rootfor.get(Fornecedor_.nif),
+                rootfor.get(Fornecedor_.endereco), rootfor.get(Fornecedor_.email), rootfor.get(Fornecedor_.telefone)));
 
-        Predicate[] predicates=criarPredicatesResumo(fornecedorFilter,builder,rootfor, rootusu, rootemp);
+        Predicate[] predicates = criarPredicatesResumo(fornecedorFilter, builder, rootfor, rootusu, rootemp);
         query.where(predicates);
 
         return Manager.createQuery(query);
@@ -68,48 +68,48 @@ public class FornecedorRepositoryImpl implements FornecedorRepositoryQuery {
     }
 
     private Predicate[] criarPredicatesResumo(FornecedorFilter fornecedorFilter, CriteriaBuilder builder, Root<Fornecedor> rootfor, Root<Usuario> rootusu, Root<Empresa> rootemp) {
-        List<Predicate> predicates=new ArrayList<>();
+        List<Predicate> predicates = new ArrayList<>();
 
-        predicates.add(builder.equal(rootusu.get(Usuario_.EMPRESA).get(Empresa_.ID),rootemp.get(Empresa_.ID)));
-        predicates.add(builder.equal(rootfor.get(Fornecedor_.USUARIO_CRIOU_ID),rootusu.get(Usuario_.ID)));
-        predicates.add(builder.equal(rootemp.get(Empresa_.ID),fornecedorFilter.getIdEmpresa()));
+        predicates.add(builder.equal(rootusu.get(Usuario_.EMPRESA).get(Empresa_.ID), rootemp.get(Empresa_.ID)));
+        predicates.add(builder.equal(rootfor.get(Fornecedor_.USUARIO_CRIOU_ID), rootusu.get(Usuario_.ID)));
+        predicates.add(builder.equal(rootemp.get(Empresa_.ID), fornecedorFilter.getIdEmpresa()));
 
         return getPredicates(fornecedorFilter, builder, rootfor, predicates);
     }
 
     private Predicate[] getPredicates(FornecedorFilter fornecedorFilter, CriteriaBuilder builder, Root<Fornecedor> rootfor, List<Predicate> predicates) {
-        if(!StringUtils.isEmpty(fornecedorFilter.getNome())){
-            predicates.add(builder.like(builder.lower(rootfor.get(Fornecedor_.NOME)),"%"+fornecedorFilter.getNome().toLowerCase()+"%"));
+        if (!StringUtils.isEmpty(fornecedorFilter.getNome())) {
+            predicates.add(builder.like(builder.lower(rootfor.get(Fornecedor_.NOME)), "%" + fornecedorFilter.getNome().toLowerCase() + "%"));
         }
-        if(fornecedorFilter.getNif()!=null){
-            predicates.add(builder.like(rootfor.get(Fornecedor_.NIF),"%"+fornecedorFilter.getNif()+"%"));
+        if (fornecedorFilter.getNif() != null) {
+            predicates.add(builder.like(rootfor.get(Fornecedor_.NIF), "%" + fornecedorFilter.getNif() + "%"));
         }
         return predicates.toArray(new Predicate[predicates.size()]);
     }
 
     private void adicionarRestricoesDePaginaResumo(TypedQuery<FornecedorResumo> typedQuery, Pageable pageable) {
-        typedQuery.setFirstResult(pageable.getPageNumber()*pageable.getPageSize());
+        typedQuery.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
         typedQuery.setMaxResults(pageable.getPageSize());
     }
 
     private Long total(FornecedorFilter fornecedorFilter) {
-        CriteriaBuilder Builder=Manager.getCriteriaBuilder();
-        CriteriaQuery<Long> criteria=Builder.createQuery(Long.class);
-        Root<Fornecedor> root=criteria.from(Fornecedor.class);
+        CriteriaBuilder Builder = Manager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteria = Builder.createQuery(Long.class);
+        Root<Fornecedor> root = criteria.from(Fornecedor.class);
 
-        Predicate[] predicates=criarPredicates(fornecedorFilter,Builder,root);
+        Predicate[] predicates = criarPredicates(fornecedorFilter, Builder, root);
         criteria.where(predicates);
         criteria.select(Builder.count(root));
         return Manager.createQuery(criteria).getSingleResult();
     }
 
     private void adicionarRestricoesDePagina(TypedQuery<Fornecedor> query, Pageable pageable) {
-        query.setFirstResult(pageable.getPageNumber()*pageable.getPageSize());
+        query.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
         query.setMaxResults(pageable.getPageSize());
     }
 
     private Predicate[] criarPredicates(FornecedorFilter fornecedorFilter, CriteriaBuilder builder, Root<Fornecedor> root) {
-        List<Predicate> predicates=new ArrayList<>();
+        List<Predicate> predicates = new ArrayList<>();
         return getPredicates(fornecedorFilter, builder, root, predicates);
     }
 }

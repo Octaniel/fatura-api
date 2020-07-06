@@ -16,10 +16,10 @@ public class GrupoService {
         this.grupoRepository = grupoRepository;
     }
 
-    public Grupo atualizar(Integer id, Grupo grupo){
+    public Grupo atualizar(Integer id, Grupo grupo) {
         Optional<Grupo> byId = grupoRepository.findById(id);
         assert byId.orElse(null) != null;
-        BeanUtils.copyProperties(grupo,byId.orElse(null),"id");
+        BeanUtils.copyProperties(grupo, byId.orElse(null), "id");
         return grupoRepository.save(byId.get());
     }
 }

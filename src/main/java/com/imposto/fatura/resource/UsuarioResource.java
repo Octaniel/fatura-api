@@ -34,35 +34,35 @@ public class UsuarioResource {
     }*/
 
     @PostMapping
-    public ResponseEntity<Usuario> salvar(@RequestBody @Valid Usuario usuario, HttpServletResponse httpServletResponse){
-       return usuarioService.salvar(usuario,httpServletResponse);
+    public ResponseEntity<Usuario> salvar(@RequestBody @Valid Usuario usuario, HttpServletResponse httpServletResponse) {
+        return usuarioService.salvar(usuario, httpServletResponse);
     }
 
     @GetMapping
-    public Page<Usuario> filtrar(UsuarioFilter usuarioFilter, Pageable pageable){
-        return usuarioRepository.filtrar(usuarioFilter,pageable);
+    public Page<Usuario> filtrar(UsuarioFilter usuarioFilter, Pageable pageable) {
+        return usuarioRepository.filtrar(usuarioFilter, pageable);
     }
 
     @GetMapping("/{id}")
-    public Usuario listarPorId(@PathVariable Integer id){
+    public Usuario listarPorId(@PathVariable Integer id) {
         Optional<Usuario> byId = usuarioRepository.findById(id);
-        if(byId.isEmpty()) throw new UsuarioException("Não existe nenhum usuario com este id");
+        if (byId.isEmpty()) throw new UsuarioException("Não existe nenhum usuario com este id");
         return byId.get();
     }
 
     @PutMapping("/{id}")
-    public Usuario atualizar(@PathVariable Integer id, @RequestBody Usuario usuario){
-        return usuarioService.atualizar(id,usuario);
+    public Usuario atualizar(@PathVariable Integer id, @RequestBody Usuario usuario) {
+        return usuarioService.atualizar(id, usuario);
     }
 
     @PutMapping("senha/{id}")
-    public Usuario atualizarSenha(@PathVariable Integer id, @RequestBody Usuario usuario){
-        return usuarioService.atualizarSenha(id,usuario);
+    public Usuario atualizarSenha(@PathVariable Integer id, @RequestBody Usuario usuario) {
+        return usuarioService.atualizarSenha(id, usuario);
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @DeleteMapping("/{id}")
-    public void apagar(@PathVariable Integer id){
+    public void apagar(@PathVariable Integer id) {
         usuarioRepository.deleteById(id);
     }
 }

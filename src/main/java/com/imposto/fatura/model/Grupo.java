@@ -23,7 +23,7 @@ public class Grupo {
     private String nome;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "tb_grupo_permissao",joinColumns = @JoinColumn(name = "grupo_id")
-            ,inverseJoinColumns = @JoinColumn(name = "permissao_id"))
+    @JoinTable(name = "tb_grupo_permissao", joinColumns = @JoinColumn(name = "grupo_id")
+            , inverseJoinColumns = @JoinColumn(name = "permissao_id"))
     private List<Permisao> permisoes;
 }

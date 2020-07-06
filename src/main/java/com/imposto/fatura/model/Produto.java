@@ -30,7 +30,7 @@ public class Produto {
     @Column(name = "nome_produto")
     private String nome;
 
-    @NotNull(groups = ProdutoGroup.class,message = "Quantidade é obrigatorio")
+    @NotNull(groups = ProdutoGroup.class, message = "Quantidade é obrigatorio")
     @Column(name = "quantidade_produto")
     private Integer stock;
 
@@ -100,11 +100,11 @@ public class Produto {
     @Column(name = "codigo")
     private String codigo;
 
-    @NotNull(groups = ProdutoGroup.class,message = "Stock Minimo é obrigatorio")
+    @NotNull(groups = ProdutoGroup.class, message = "Stock Minimo é obrigatorio")
     @Column(name = "stock_minimo")
     private Integer stockMinimo;
 
-    @NotNull(groups = ProdutoGroup.class,message = "Quantidade Maxima da Venda é obrigatorio")
+    @NotNull(groups = ProdutoGroup.class, message = "Quantidade Maxima da Venda é obrigatorio")
     @Column(name = "quantidade_maxima_venda")
     private Integer quantidadeMaximaVenda;
 }

@@ -13,8 +13,8 @@ public class OfertaGroupSequenceProvider implements DefaultGroupSequenceProvider
     public List<Class<?>> getValidationGroups(Produto produto) {
         List<Class<?>> groups = new ArrayList<>();
         groups.add(Produto.class);
-        if(produto !=null && produto.getNatureza()!=null)
-        if(produto.getNatureza().equals(TipoOferta.PRODUTO))groups.add(ProdutoGroup.class);
+        if (produto != null && produto.getNatureza() != null)
+            if (produto.getNatureza().equals(TipoOferta.PRODUTO)) groups.add(ProdutoGroup.class);
 
         return groups;
     }

@@ -71,7 +71,7 @@ public class CompraService {
             valorImposto.updateAndGet(v -> v + itemProduto.getValorImposto());
             valorTotal.updateAndGet(v -> v + itemProduto.getValorTotal());
             itemProduto.setQuantidade(x.getQuantidadeItem());
-            one.setStock(one.getStock()+x.getQuantidadeItem());
+            one.setStock(one.getStock() + x.getQuantidadeItem());
             produtoRepository.save(one);
             itemProdutoCompraRepository.save(itemProduto);
         });
@@ -81,10 +81,10 @@ public class CompraService {
         return ResponseEntity.status(HttpStatus.CREATED).body(save1);
     }
 
-    public Compra atualizar(Compra compra, Integer id){
+    public Compra atualizar(Compra compra, Integer id) {
         Optional<Compra> byId = compraRepository.findById(id);
         assert byId.orElse(null) != null;
-        BeanUtils.copyProperties(compra,byId.orElse(null),"id","dataCriacao");
+        BeanUtils.copyProperties(compra, byId.orElse(null), "id", "dataCriacao");
         byId.get().setDataAlteracao(LocalDateTime.now());
         return compraRepository.save(byId.get());
     }

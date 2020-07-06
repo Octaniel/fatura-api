@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class WebConfig {
 
     @Bean
-    public CacheManager cacheManager(){
+    public CacheManager cacheManager() {
         return new ConcurrentMapCacheManager();
     }
 }

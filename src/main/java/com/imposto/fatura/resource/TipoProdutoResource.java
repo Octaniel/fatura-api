@@ -30,27 +30,27 @@ public class TipoProdutoResource {
     }
 
     @GetMapping("listar")
-    public List<TipoProduto> listar(TipoProdutoFilter tipoProdutoFilter){
+    public List<TipoProduto> listar(TipoProdutoFilter tipoProdutoFilter) {
         return tipoProdutoRepositoryCustom.listar(tipoProdutoFilter);
     }
 
     @GetMapping
-    public Page<TipoProduto> filtrar(TipoProdutoFilter tipoProdutoFilter, Pageable pageable){
-        return tipoProdutoRepositoryCustom.filtrar(tipoProdutoFilter,pageable);
+    public Page<TipoProduto> filtrar(TipoProdutoFilter tipoProdutoFilter, Pageable pageable) {
+        return tipoProdutoRepositoryCustom.filtrar(tipoProdutoFilter, pageable);
     }
 
     @PostMapping
-    public ResponseEntity<TipoProduto> salvar(@RequestBody @Valid TipoProduto tipoProduto, HttpServletResponse httpServletResponse){
-        return tipoProdutoService.salvar(tipoProduto,httpServletResponse);
+    public ResponseEntity<TipoProduto> salvar(@RequestBody @Valid TipoProduto tipoProduto, HttpServletResponse httpServletResponse) {
+        return tipoProdutoService.salvar(tipoProduto, httpServletResponse);
     }
 
     @PutMapping("/{id}")
-    public TipoProduto atualizar(@RequestBody @Valid TipoProduto tipoProduto, @PathVariable Integer id){
+    public TipoProduto atualizar(@RequestBody @Valid TipoProduto tipoProduto, @PathVariable Integer id) {
         return tipoProdutoService.atualizar(tipoProduto, id);
     }
 
     @GetMapping("/{id}")
-    public TipoProduto atualizar(@PathVariable Integer id){
+    public TipoProduto atualizar(@PathVariable Integer id) {
         return tipoProdutoRepository.findById(id).orElse(null);
     }
 }

@@ -20,11 +20,11 @@ public class TokenResorce {
     }
 
     @DeleteMapping("/revoke")
-    public void revoke(HttpServletResponse response, HttpServletRequest request){
-        Cookie cookie=new Cookie("refreshToken",null);
+    public void revoke(HttpServletResponse response, HttpServletRequest request) {
+        Cookie cookie = new Cookie("refreshToken", null);
         cookie.setHttpOnly(true);
         cookie.setSecure(property.getSeguranca().isEnableHttps());//TODO:Mudar para true na producao
-        cookie.setPath(request.getContextPath()+"/oauth/token");
+        cookie.setPath(request.getContextPath() + "/oauth/token");
         cookie.setMaxAge(0);
         response.addCookie(cookie);
         response.setStatus(HttpStatus.NO_CONTENT.value());

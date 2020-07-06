@@ -45,7 +45,7 @@ public class VendaRepositoryImpl implements VendaRepositoryQuery {
         Root<Usuario> rootusu = criteria.from(Usuario.class);
         Root<Empresa> rootemp = criteria.from(Empresa.class);
         criteria.select(rootven);
-        Predicate[] predicates = criarPredicatesResumo(Builder,rootven, documentoFilter, rootusu,rootemp);
+        Predicate[] predicates = criarPredicatesResumo(Builder, rootven, documentoFilter, rootusu, rootemp);
         criteria.where(predicates);
 
         TypedQuery<Venda> query = Manager.createQuery(criteria);
@@ -54,7 +54,7 @@ public class VendaRepositoryImpl implements VendaRepositoryQuery {
 
 
     private Predicate[] criarPredicatesResumo(CriteriaBuilder builder, Root<Venda> rootven, DocumentoFilter documentoFilter, Root<Usuario> rootusu, Root<Empresa> rootemp) {
-        List<Predicate> predicates=new ArrayList<>();
+        List<Predicate> predicates = new ArrayList<>();
         predicates.add(builder.equal(rootusu.get(Usuario_.EMPRESA).get(Empresa_.ID), rootemp.get(Empresa_.ID)));
         predicates.add(builder.equal(rootven.get(Venda_.USUARIO_CRIOU_ID), rootusu.get(Usuario_.ID)));
         predicates.add(builder.equal(rootemp.get(Empresa_.ID), documentoFilter.getIdEmpresa()));
@@ -105,7 +105,7 @@ public class VendaRepositoryImpl implements VendaRepositoryQuery {
         Root<Empresa> rootemp = query.from(Empresa.class);
         Root<Usuario> rootusu = query.from(Usuario.class);
         Root<Usuario> rootusu1 = query.from(Usuario.class);
-        Join<Object,Object> joincli = rootven.join(Venda_.CLIENTE, JoinType.LEFT);
+        Join<Object, Object> joincli = rootven.join(Venda_.CLIENTE, JoinType.LEFT);
 
         query.select(builder.construct(VendaResumoPro.class
                 , rootven.get(Venda_.id), joincli.get(Cliente_.NOME),
@@ -137,8 +137,8 @@ public class VendaRepositoryImpl implements VendaRepositoryQuery {
         predicates.add(builder.equal(rootusu.get(Usuario_.EMPRESA).get(Empresa_.ID), rootemp.get(Empresa_.ID)));
         predicates.add(builder.equal(rootven.get(Venda_.USUARIO_CRIOU_ID), rootusu.get(Usuario_.ID)));
         //predicates.add(builder.equal(rootven.get(Venda_.CLIENTE),rootcl));
-        predicates.add(builder.equal(rootven.get(Venda_.SERIE),rootser));
-        predicates.add(builder.equal(rootven.get(Venda_.SERIE).get(Serie_.TIPO_DOCUMENTO),roottpdo));
+        predicates.add(builder.equal(rootven.get(Venda_.SERIE), rootser));
+        predicates.add(builder.equal(rootven.get(Venda_.SERIE).get(Serie_.TIPO_DOCUMENTO), roottpdo));
         predicates.add(builder.equal(rootemp.get(Empresa_.ID), vendaFilter.getIdEmpresa()));
 
         if (!StringUtils.isEmpty(vendaFilter.getNomeCliente())) {

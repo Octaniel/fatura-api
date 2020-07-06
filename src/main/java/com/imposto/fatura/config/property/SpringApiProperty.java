@@ -1,6 +1,7 @@
 package com.imposto.fatura.config.property;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
 @ConfigurationProperties("fatura")
 public class SpringApiProperty {
     private Seguranca seguranca;
@@ -22,7 +23,7 @@ public class SpringApiProperty {
         this.seguranca = seguranca;
     }
 
-    public static class Seguranca{
+    public static class Seguranca {
         private boolean enableHttps;
 
         public boolean isEnableHttps() {

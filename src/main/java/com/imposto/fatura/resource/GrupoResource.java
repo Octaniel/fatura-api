@@ -23,12 +23,12 @@ public class GrupoResource {
 
 
     @PutMapping("/{id}")
-    public Grupo atualizar(@PathVariable Integer id, @RequestBody @Valid Grupo grupo){
-       return grupoService.atualizar(id,grupo);
+    public Grupo atualizar(@PathVariable Integer id, @RequestBody @Valid Grupo grupo) {
+        return grupoService.atualizar(id, grupo);
     }
 
     @GetMapping
-    public List<Grupo> listar(){
+    public List<Grupo> listar() {
         return grupoRepository.findAll();
     }
 }

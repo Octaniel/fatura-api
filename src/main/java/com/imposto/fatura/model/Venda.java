@@ -68,7 +68,7 @@ public class Venda {
 
     @JsonIgnoreProperties("")
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "tb_item_produto",joinColumns = @JoinColumn(name = "venda_id")
-            ,inverseJoinColumns = @JoinColumn(name = "produto_id"))
+    @JoinTable(name = "tb_item_produto", joinColumns = @JoinColumn(name = "venda_id")
+            , inverseJoinColumns = @JoinColumn(name = "produto_id"))
     private List<Produto> produtos;
 }

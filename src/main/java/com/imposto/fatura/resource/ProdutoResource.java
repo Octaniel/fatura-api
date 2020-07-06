@@ -40,43 +40,43 @@ public class ProdutoResource {
     }
 
     @GetMapping("teste")
-    public List<Produto> listar(){
+    public List<Produto> listar() {
         return produtoRepository.findAll();
     }
 
     @PostMapping
-    public ResponseEntity<Produto> salvar(@RequestBody @Valid Produto produto, HttpServletResponse httpServletResponse){
-       return produtoService.salvar(produto,httpServletResponse);
+    public ResponseEntity<Produto> salvar(@RequestBody @Valid Produto produto, HttpServletResponse httpServletResponse) {
+        return produtoService.salvar(produto, httpServletResponse);
     }
 
     @GetMapping
-    public Page<?> filtrar(ProdutoFilter produtoFilter, Pageable pageable){
-        return produtoRepository.resumo(produtoFilter,pageable);
+    public Page<?> filtrar(ProdutoFilter produtoFilter, Pageable pageable) {
+        return produtoRepository.resumo(produtoFilter, pageable);
     }
 
     @GetMapping("taxa")
-    public List<Taxa> listarTaxa(){
+    public List<Taxa> listarTaxa() {
         return taxaRepository.findAll();
     }
 
     @GetMapping("motivoIsencao")
-    public List<MotivoIsencao> listarMotivo(){
+    public List<MotivoIsencao> listarMotivo() {
         return motivoIsencaoRepository.findAll();
     }
 
     @PutMapping("/{id}")
-    public Produto atualizar(@RequestBody @Valid Produto produto, @PathVariable Integer id){
+    public Produto atualizar(@RequestBody @Valid Produto produto, @PathVariable Integer id) {
         return produtoService.atualizar(produto, id);
     }
 
     @GetMapping("/{id}")
-    public Produto atualizar(@PathVariable Integer id){
+    public Produto atualizar(@PathVariable Integer id) {
         return produtoRepository.findById(id).orElse(null);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void remover(@PathVariable Integer id){
+    public void remover(@PathVariable Integer id) {
         Produto one = produtoRepository.getOne(id);
         one.setStatus(false);
         produtoRepository.save(one);

@@ -29,38 +29,38 @@ public class FornecedorResource {
     }
 
     @GetMapping("list")
-    public List<Fornecedor> lista(){
+    public List<Fornecedor> lista() {
         return fornecedorRepository.findAll();
     }
 
     @GetMapping("listar")
-    public List<FornecedorResumo> listar(FornecedorFilter fornecedorFilter){
+    public List<FornecedorResumo> listar(FornecedorFilter fornecedorFilter) {
         return fornecedorRepository.resumoListar(fornecedorFilter);
     }
 
     @PostMapping
-    public ResponseEntity<Fornecedor> salvar (@RequestBody @Valid Fornecedor fornecedor, HttpServletResponse httpServletResponse){
-        return fornecedorService.salvar(fornecedor,httpServletResponse);
+    public ResponseEntity<Fornecedor> salvar(@RequestBody @Valid Fornecedor fornecedor, HttpServletResponse httpServletResponse) {
+        return fornecedorService.salvar(fornecedor, httpServletResponse);
     }
 
     @GetMapping
-    public Page<FornecedorResumo> filtrar(FornecedorFilter fornecedorFilter, Pageable pageable){
-        return fornecedorRepository.resumo(fornecedorFilter,pageable);
+    public Page<FornecedorResumo> filtrar(FornecedorFilter fornecedorFilter, Pageable pageable) {
+        return fornecedorRepository.resumo(fornecedorFilter, pageable);
     }
 
     @GetMapping("/{id}")
-    public Fornecedor filtrar(@PathVariable Integer id){
+    public Fornecedor filtrar(@PathVariable Integer id) {
         return fornecedorRepository.findById(id).orElse(null);
     }
 
     @PutMapping("/{id}")
-    public Fornecedor atualizar(@PathVariable Integer id, @RequestBody @Valid Fornecedor fornecedor){
-        return fornecedorService.atualizar(id,fornecedor);
+    public Fornecedor atualizar(@PathVariable Integer id, @RequestBody @Valid Fornecedor fornecedor) {
+        return fornecedorService.atualizar(id, fornecedor);
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @DeleteMapping("/{id}")
-    public void remover(@PathVariable Integer id){
+    public void remover(@PathVariable Integer id) {
         fornecedorRepository.deleteById(id);
     }
 }

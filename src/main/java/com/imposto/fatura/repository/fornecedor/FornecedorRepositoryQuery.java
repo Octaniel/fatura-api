@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface FornecedorRepositoryQuery {
     Page<Fornecedor> filtrar(FornecedorFilter fornecedorFilter, Pageable pageable);
+
     Page<FornecedorResumo> resumo(FornecedorFilter fornecedorFilter, Pageable pageable);
 
     List<FornecedorResumo> resumoListar(FornecedorFilter fornecedorFilter);

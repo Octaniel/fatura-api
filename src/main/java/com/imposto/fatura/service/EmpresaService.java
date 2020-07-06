@@ -27,39 +27,40 @@ public class EmpresaService {
         this.empresaRepository = empresaRepository;
     }
 
-    public ResponseEntity<Empresa> salvar(Empresa empresa, HttpServletResponse httpServletResponse){
+    public ResponseEntity<Empresa> salvar(Empresa empresa, HttpServletResponse httpServletResponse) {
         validarEmpresa(empresa, 0);
         LocalDateTime localDateTime = LocalDateTime.now();
         empresa.setDataAlteracoa(localDateTime);
         empresa.setDataCriacao(localDateTime);
         Empresa save = empresaRepository.save(empresa);
-        publisher.publishEvent(new RecursoCriadoEvent(this,httpServletResponse,save.getId()));
+        publisher.publishEvent(new RecursoCriadoEvent(this, httpServletResponse, save.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).body(save);
     }
 
     private void validarEmpresa(Empresa empresa, Integer id) {
-        if(empresa.getNif().toString().length()!=9) throw new EmpresaException("NIF deve ter 9 digitos");
+        if (empresa.getNif().toString().length() != 9) throw new EmpresaException("NIF deve ter 9 digitos");
         List<Empresa> lista = empresaRepository.findAll();
-        lista.forEach(x ->{
-            if(x.getNif().equals(empresa.getNif())&&!x.getId().equals(id)){
-                    throw new EmpresaException("NIF existente");
+        lista.forEach(x -> {
+            if (x.getNif().equals(empresa.getNif()) && !x.getId().equals(id)) {
+                throw new EmpresaException("NIF existente");
             }
-            if(x.getEmail().equals(empresa.getEmail())&&!x.getId().equals(id)){
+            if (x.getEmail().equals(empresa.getEmail()) && !x.getId().equals(id)) {
                 throw new EmpresaException("Este email já esta sendo utilizado por outra empresa");
             }
-            if(x.getNome().equals(empresa.getNome())&&!x.getId().equals(id)){
+            if (x.getNome().equals(empresa.getNome()) && !x.getId().equals(id)) {
                 throw new EmpresaException("Este nome já esta sendo utilizado por outra empresa");
             }
-            if(x.getNumeroCertificacao().equals(empresa.getNumeroCertificacao())&&!x.getId().equals(id)){
+            if (x.getNumeroCertificacao().equals(empresa.getNumeroCertificacao()) && !x.getId().equals(id)) {
                 throw new EmpresaException("Este número certificação já esta sendo utilizado por outra empresa");
             }
         });
     }
-    public Empresa atualizar(Integer id, Empresa empresa){
+
+    public Empresa atualizar(Integer id, Empresa empresa) {
         Optional<Empresa> byId = empresaRepository.findById(id);
         validarEmpresa(empresa, id);
         assert byId.orElse(null) != null;
-        BeanUtils.copyProperties(empresa,byId.orElse(null),"id","dataCriacao");
+        BeanUtils.copyProperties(empresa, byId.orElse(null), "id", "dataCriacao");
         byId.get().setDataAlteracoa(LocalDateTime.now());
         return empresaRepository.save(byId.get());
     }

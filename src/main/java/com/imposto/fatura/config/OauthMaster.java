@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Profile("oauth-security")
 @EnableWebSecurity
-public class OauthMaster extends WebSecurityConfigurerAdapter{
+public class OauthMaster extends WebSecurityConfigurerAdapter {
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
